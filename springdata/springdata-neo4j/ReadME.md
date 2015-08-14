@@ -27,7 +27,7 @@
 			<version>5.1.3.Final</version>
 		</dependency>
 
-## 2 nknown persistent entity
+## 2 unknown persistent entity
 
 Problem:
 
