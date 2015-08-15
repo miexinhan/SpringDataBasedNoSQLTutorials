@@ -2,16 +2,27 @@ package com.spike.springdata.neo4j.nativeAPI;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.neo4j.graphdb.Direction;
+import org.neo4j.graphdb.DynamicRelationshipType;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Path;
 import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.ResourceIterable;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
+import org.neo4j.graphdb.traversal.Evaluation;
+import org.neo4j.graphdb.traversal.Evaluator;
+import org.neo4j.graphdb.traversal.Evaluators;
+import org.neo4j.graphdb.traversal.TraversalDescription;
+import org.neo4j.graphdb.traversal.Traverser;
+import org.neo4j.graphdb.traversal.Uniqueness;
 import org.neo4j.kernel.impl.util.FileUtils;
 import org.neo4j.tooling.GlobalGraphOperations;
 
@@ -28,6 +39,13 @@ import com.spike.springdata.neo4j.anno.Neo4jInActionBook;
 public class Neo4jAPICompreheansiveDemonstration {
 	private static final Logger logger = Logger.getLogger(Neo4jAPICompreheansiveDemonstration.class);
 
+	private static final String NEWLINE = System.getProperty("line.separator");
+
+	/**
+	 * static filed to behold the id of the created node
+	 */
+	static Long USER1_ID = null;
+
 	public static void main(String[] args) {
 		prepare(Neo4jAppDevConfig.Embedded_DB_DIR);
 
@@ -37,6 +55,12 @@ public class Neo4jAPICompreheansiveDemonstration {
 		populateGraphData(gds);
 
 		navigateUsingLables(gds);
+
+		traverseUsingCoreJavaAPI(gds);
+
+		traverseUsingBuiltinTraverseAPI(gds);
+
+		traverseUsingBuiltinTraverseAPIWithCustomedEvaluator(gds);
 	}
 
 	/**
@@ -46,12 +70,15 @@ public class Neo4jAPICompreheansiveDemonstration {
 	 *            The path to delete
 	 */
 	static void prepare(String dbDirPath) {
+		logger.info(NEWLINE + "prepare start");
+
 		try {
 			FileUtils.deleteRecursively(new File(dbDirPath));
 		} catch (IOException e) {
 			logger.error("Fail to delete local database directory, refer", e);
 			throw new RuntimeException();
 		}
+		logger.info(NEWLINE + "prepare end");
 	}
 
 	/**
@@ -61,16 +88,18 @@ public class Neo4jAPICompreheansiveDemonstration {
 	 *            The {@link GraphDatabaseService}
 	 */
 	static void populateGraphData(final GraphDatabaseService gds) {
+		logger.info(NEWLINE + "populateGraphData start");
 
 		// begin transaction
 		try (Transaction tx = gds.beginTx();) {
 			// create nodes
 			Node user1 = gds.createNode();
-			logger.info("create user:" + user1.getId());
+			logger.info(NEWLINE + "create user:" + user1.getId());
+			USER1_ID = user1.getId();
 			Node user2 = gds.createNode();
-			logger.info("create user:" + user2.getId());
+			logger.info(NEWLINE + "create user:" + user2.getId());
 			Node user3 = gds.createNode();
-			logger.info("create user:" + user3.getId());
+			logger.info(NEWLINE + "create user:" + user3.getId());
 
 			Node movie1 = gds.createNode();
 			Node movie2 = gds.createNode();
@@ -123,24 +152,189 @@ public class Neo4jAPICompreheansiveDemonstration {
 		} catch (Exception e) {
 			logger.error("Something strange happened when populate data,  refer", e);
 		}
+
+		logger.info(NEWLINE + "populateGraphData end");
 	}
 
 	/**
 	 * navigate {@link Node}s using {@link Label}
 	 * 
 	 * @param gds
+	 *            The {@link GraphDatabaseService}
 	 */
 	static void navigateUsingLables(final GraphDatabaseService gds) {
+		logger.info(NEWLINE + "navigateUsingLables start");
+
 		try (Transaction tx = gds.beginTx();) {
 			// QUERY using labels
 			ResourceIterable<Node> users = GlobalGraphOperations.at(gds).getAllNodesWithLabel(NodeTypeEnum.USERS);
 			for (Node user : users) {
-				System.out.println(user.getProperty(PropEnum.NAME.name()));
+				logger.info(NEWLINE + user.getProperty(PropEnum.NAME.name()));
 			}
 
 			tx.success();
 		} catch (Exception e) {
 			logger.error("Something strange happened when query using lables, refer", e);
+		}
+
+		logger.info(NEWLINE + "navigateUsingLables end");
+	}
+
+	/**
+	 * Traverse using Neo4j Core Java API
+	 * 
+	 * @param gds
+	 *            The {@link GraphDatabaseService}
+	 */
+	static void traverseUsingCoreJavaAPI(final GraphDatabaseService gds) {
+		logger.info(NEWLINE + "traverseUsingCoreJavaAPI start");
+
+		try (Transaction tx = gds.beginTx();) {
+			// 1 find the starting node
+			Node user1 = gds.getNodeById(USER1_ID);
+			logger.info(NEWLINE + user1.getProperty(PropEnum.NAME.name()));
+
+			// 2 traverse direct relationship
+			// all relationships
+			// Iterable<Relationship> allRelathinshipOfUser1 =
+			// user1.getRelationships();
+			// all a specific relationship - filtering
+			Iterable<Relationship> allHasSeenRelathinshipOfUser1 = user1.getRelationships(DynamicRelationshipType
+					.withName(RelTypeEnum.HAS_SEEN.name()));
+			Set<Node> movieNodeAssociatedWithUser1 = new HashSet<Node>();
+			for (Relationship relationship : allHasSeenRelathinshipOfUser1) {
+				if (RelTypeEnum.HAS_SEEN.name().equals(relationship.getType().name())) {
+					movieNodeAssociatedWithUser1.add(relationship.getEndNode());
+				}
+			}
+			for (Node movie : movieNodeAssociatedWithUser1) {
+				logger.info(NEWLINE + movie.getProperty(PropEnum.NAME.name()));
+			}
+
+			// 3 traverse second-level relationship
+			Set<Node> friendsOfUser1 = new HashSet<Node>();
+			for (Relationship relationship : user1.getRelationships(RelTypeEnum.IS_FRIEND_OF)) {
+				friendsOfUser1.add(relationship.getOtherNode(user1));
+			}
+			Set<Node> moviesFriendsOfUser1Like = new HashSet<Node>();
+			for (Node friend : friendsOfUser1) {
+				for (Relationship relationship : friend.getRelationships(Direction.OUTGOING, RelTypeEnum.HAS_SEEN)) {
+					moviesFriendsOfUser1Like.add(relationship.getEndNode());
+				}
+			}
+			for (Node movie : moviesFriendsOfUser1Like) {
+				logger.info(NEWLINE + movie.getProperty(PropEnum.NAME.name()));
+			}
+
+			tx.success();
+		} catch (Exception e) {
+			logger.error("Something strange happened when traverse using core Java API, refer", e);
+
+		}
+
+		logger.info(NEWLINE + "traverseUsingCoreJavaAPI end");
+	}
+
+	/**
+	 * Traverse using Neo4j Built-in Traverse API: {@link TraversalDescription}
+	 * 
+	 * @param gds
+	 *            The {@link GraphDatabaseService}
+	 */
+	static void traverseUsingBuiltinTraverseAPI(final GraphDatabaseService gds) {
+		logger.info(NEWLINE + "traverseUsingBuiltinTraverseAPI start");
+
+		try (Transaction tx = gds.beginTx();) {
+			// the start node
+			Node user1 = gds.getNodeById(USER1_ID);
+
+			// construct traversal description
+			TraversalDescription travesalDesc = gds.traversalDescription().relationships(RelTypeEnum.IS_FRIEND_OF)
+					.relationships(RelTypeEnum.HAS_SEEN, Direction.OUTGOING).uniqueness(Uniqueness.NODE_GLOBAL)
+					.evaluator(Evaluators.atDepth(2));
+
+			// execute the traverse operation
+			Traverser traverser = travesalDesc.traverse(user1);
+			Iterable<Node> moviesFriendsOfUser1Like = traverser.nodes();
+			for (Node movie : moviesFriendsOfUser1Like) {
+				logger.info(NEWLINE + movie.getProperty(PropEnum.NAME.name()));
+			}
+			tx.success();
+		} catch (Exception e) {
+			logger.error("Something strange happened when traverse using built-in traverse API, refer", e);
+
+		}
+		logger.info(NEWLINE + "traverseUsingBuiltinTraverseAPI end");
+	}
+
+	/**
+	 * Traverse using Neo4j Built-in Traverse API: {@link TraversalDescription}
+	 * and customed {@link Executor}
+	 * 
+	 * @param gds
+	 *            The {@link GraphDatabaseService}
+	 */
+	static void traverseUsingBuiltinTraverseAPIWithCustomedEvaluator(final GraphDatabaseService gds) {
+		logger.info(NEWLINE + "traverseUsingBuiltinTraverseAPIWithCustomedEvaluator start");
+
+		try (Transaction tx = gds.beginTx();) {
+			// the start node
+			Node user1 = gds.getNodeById(USER1_ID);
+
+			// construct traversal description
+			TraversalDescription travesalDesc = gds.traversalDescription().relationships(RelTypeEnum.IS_FRIEND_OF)
+					.relationships(RelTypeEnum.HAS_SEEN, Direction.OUTGOING).uniqueness(Uniqueness.NODE_GLOBAL)
+					.evaluator(Evaluators.atDepth(2)).evaluator(new CustomedEvaluator(user1));
+
+			// execute the traverse operation
+			Traverser traverser = travesalDesc.traverse(user1);
+			Iterable<Node> moviesFriendsOfUser1Like = traverser.nodes();
+			for (Node movie : moviesFriendsOfUser1Like) {
+				logger.info(NEWLINE + movie.getProperty(PropEnum.NAME.name()));
+			}
+			tx.success();
+		} catch (Exception e) {
+			logger.error(
+					"Something strange happened when traverse using built-in traverse API with customed evaluator, refer",
+					e);
+
+		}
+		logger.info(NEWLINE + "traverseUsingBuiltinTraverseAPIWithCustomedEvaluator end");
+
+	}
+
+	/**
+	 * The customed {@link Evaluator}<br/>
+	 * {@link Evaluator} has 2 responsibilities:<br/>
+	 * (1) determine whether current visited node should add to the traversal
+	 * result<br/>
+	 * (2) determine next steps: (a) continue futher down the path, (b) abandon
+	 * current path, move to next path if possible
+	 * 
+	 * @author zhoujiagen<br/>
+	 *         Aug 15, 2015 10:20:45 PM
+	 */
+	static class CustomedEvaluator implements Evaluator {
+		private Node userNode;
+
+		public CustomedEvaluator(Node userNode) {
+			this.userNode = userNode;
+		}
+
+		@Override
+		public Evaluation evaluate(Path path) {
+			Node currentNode = path.endNode();
+			if (!currentNode.hasProperty(PropEnum.TYPE.name())
+					|| !NodeTypeEnum.MOVIES.name().equals(currentNode.getProperty(PropEnum.TYPE.name()))) {
+				return Evaluation.EXCLUDE_AND_CONTINUE;
+			}
+			for (Relationship r : currentNode.getRelationships(Direction.INCOMING, RelTypeEnum.HAS_SEEN)) {
+				if (userNode.equals(r.getStartNode())) {
+					return Evaluation.EXCLUDE_AND_CONTINUE;
+				}
+			}
+
+			return Evaluation.INCLUDE_AND_CONTINUE;
 		}
 	}
 
