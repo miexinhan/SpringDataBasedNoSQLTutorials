@@ -10,7 +10,7 @@ import com.spike.springdata.neo4j.anno.SpringDataBook;
  * @author zhoujiagen<br/>
  *         Aug 12, 2015 8:58:58 PM
  */
-@SpringDataBook
+@SpringDataBook(chapter = { "7" })
 @NodeEntity
 public class Address extends AbstractEntity {
 	private String street;

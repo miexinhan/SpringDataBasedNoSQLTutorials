@@ -1,46 +1,42 @@
+# 1 Descriptive Annotation
+This package `anno`contains annotation to direct classes' source books or online links.
 
-# project home
-[Spring Data Neo4J](http://projects.spring.io/spring-data-neo4j/)
+`@OnlineResource`: online tutorials or other materials
 
-# tutorial
-[Accessing Data with Neo4j](http://spring.io/guides/gs/accessing-data-neo4j/)
+`@SpringDataBook`: Pollack M., Gierke O., Risberg T. et al. **Spring Data**. 2012.
 
-# issues
-## 1 no Validator
-		<!--spring module validation: NO!!!-->
-		<dependency>
-			<groupId>org.springmodules</groupId>
-			<artifactId>spring-modules-validation</artifactId>
-			<version>0.8</version>
-		</dependency>
+`@Neo4jInActionBook`: Vukotic A., Watt N. et al. **Neo4j in Action**. 2015.
+
+`@GraphDatabasesBook`: Robinson I., Webber J., Eifrem E. **Graph Databases**. 2013.
+
+# 2 Configuration
+## 2.1 `Neo4jAppDevConfig`
+Spring annotation based configuration class, using Neo4j embedded database
+
+## 2.2 `Neo4jAppDevConfig`
+Spring annotation based configuration class, using Neo4j production database
+
+**tricks when play with production database server**:
 	
-		<!-- javax validation-api: NO!!!-->
-		<dependency>
-			<groupId>javax.validation</groupId>
-			<artifactId>validation-api</artifactId>
-			<version>1.1.0.Final</version>
-		</dependency>
+	./neo4j stop
+	rm -rf ../data/graph.db/*
+	./neo4j start
+	
+# 3 Use Cases
+## 3.1 `PersonIntegrationTest`
+Offical tutorial of Spring-data-neo4j
 
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<version>5.1.3.Final</version>
-		</dependency>
+## 3.2 Spring Data book
+### `SpringDataBookDevTest`
+Integration test using embedded database for spring-data-neo4j.
 
-## 2 unknown persistent entity
+### `SpringDataBookProdTest`
+Integration test using production database for spring-data-neo4j and spring-data-neo4j-rest.
 
-Problem:
+## 3.3 Spring in Action book
+### `Neo4jAPICompreheansiveDemonstration`
+A comprehensive demonstration of Neo4j native Java APIs.
 
-		java.lang.IllegalStateException: Failed to load ApplicationContext
-		....
-		Caused by: org.springframework.data.mapping.model.MappingException: Unknown persistent entity com.spike.springdata.neo4j.domain.Person
-		
-Solution:
-
-	@Configuration
-	@EnableNeo4jRepositories
-	public class Neo4jAppConfig extends Neo4jConfiguration {
-		public Neo4jAppConfig() {
-			setBasePackage("com.spike.springdata.neo4j");
-		}
-		
+## 3.4 Graph Database book
+### `CoreNeo4jAPIDemonstration`
+Simple demonstration of core Neo4j API with comment in Chinese.

@@ -15,9 +15,11 @@ import org.springframework.data.neo4j.core.GraphDatabase;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.spike.springdata.neo4j.anno.OnlineResource;
 import com.spike.springdata.neo4j.domain.Person;
 import com.spike.springdata.neo4j.repository.PersonRepository;
 
+@OnlineResource(referenceUrls = { "http://spring.io/guides/gs/accessing-data-neo4j/" })
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { Neo4jAppConfig.class })
 public class PersonIntegrationTest {
@@ -34,7 +36,7 @@ public class PersonIntegrationTest {
 	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws IOException {
-		FileUtils.deleteRecursively(new File(Neo4jAppConfig.Embedded_DB_DIR));
+		FileUtils.deleteRecursively(new File(Neo4jAppDevConfig.Embedded_DB_DIR));
 	}
 
 	@Test

@@ -12,7 +12,7 @@ import com.spike.springdata.neo4j.anno.SpringDataBook;
  * @author zhoujiagen<br/>
  *         Aug 12, 2015 9:16:50 PM
  */
-@SpringDataBook
+@SpringDataBook(chapter = { "7" })
 @RelationshipEntity(type = "RATED")
 public class Rating extends AbstractEntity {
 	@StartNode

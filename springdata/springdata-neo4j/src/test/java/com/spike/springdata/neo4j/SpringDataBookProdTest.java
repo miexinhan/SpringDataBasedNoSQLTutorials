@@ -2,16 +2,14 @@ package com.spike.springdata.neo4j;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.data.neo4j.repository.GraphRepository;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
@@ -34,19 +32,17 @@ import com.spike.springdata.neo4j.repository.OrderRepository;
 import com.spike.springdata.neo4j.repository.ProductRepository;
 
 /**
- * Spring Data Book中案例测试，使用Repository
+ * Spring Data Book中案例测试，使用{@link GraphRepository}
  * 
  * @author zhoujiagen<br/>
  *         Aug 12, 2015 9:28:00 PM
  */
-@SpringDataBook
+@SpringDataBook(chapter = { "7" })
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { Neo4jAppConfig.class })
 // 不要回滚
 @TransactionConfiguration(defaultRollback = false)
-@ActiveProfiles({ "PRODUCT" })
-public class SpringDataBookWithRepositoryTest {
-
+public class SpringDataBookProdTest {
 	@Autowired
 	CustomerRepository customerRepository;
 	@Autowired
@@ -59,13 +55,6 @@ public class SpringDataBookWithRepositoryTest {
 	OrderRepository orderRepository;
 	@Autowired
 	LineItemRepository lineItemRepository;
-
-	@BeforeClass
-	public static void setUpBeforeClass() throws IOException {
-		// 清空嵌入式数据库的本地目录
-		// FileUtils.deleteRecursively(new
-		// File(Neo4jAppConfig.Embedded_DB_DIR));
-	}
 
 	@Test
 	public void resources() {

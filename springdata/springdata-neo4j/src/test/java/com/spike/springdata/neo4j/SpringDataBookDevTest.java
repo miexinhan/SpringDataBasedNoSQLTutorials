@@ -2,6 +2,7 @@ package com.spike.springdata.neo4j;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -10,15 +11,14 @@ import java.util.Set;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.neo4j.kernel.impl.util.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.neo4j.support.Neo4jTemplate;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.spike.springdata.neo4j.anno.OnlineResource;
 import com.spike.springdata.neo4j.anno.SpringDataBook;
 import com.spike.springdata.neo4j.domain.Address;
 import com.spike.springdata.neo4j.domain.Country;
@@ -29,18 +29,17 @@ import com.spike.springdata.neo4j.domain.Product;
 import com.spike.springdata.neo4j.domain.Tag;
 
 /**
- * Spring Data Book中案例测试
+ * Spring Data Book中案例测试，使用{@link Neo4jTemplate}
  * 
  * @author zhoujiagen<br/>
  *         Aug 12, 2015 9:28:00 PM
  */
-@SpringDataBook
+@SpringDataBook(chapter = { "7" })
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { Neo4jAppConfig.class })
+@ContextConfiguration(classes = { Neo4jAppDevConfig.class })
 // 不要回滚
 @TransactionConfiguration(defaultRollback = false)
-@ActiveProfiles({ "PRODUCT" })
-public class SpringDataBookTest {
+public class SpringDataBookDevTest {
 
 	@Autowired
 	private Neo4jTemplate neo4jTemplate;
@@ -48,8 +47,7 @@ public class SpringDataBookTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws IOException {
 		// 清空嵌入式数据库的本地目录
-		// FileUtils.deleteRecursively(new
-		// File(Neo4jAppConfig.Embedded_DB_DIR));
+		FileUtils.deleteRecursively(new File(Neo4jAppDevConfig.Embedded_DB_DIR));
 	}
 
 	@Test
@@ -78,10 +76,7 @@ public class SpringDataBookTest {
 		Product iPad = neo4jTemplate.save(new Product("iPad", "Apple tablet device", BigDecimal.valueOf(499), tags));
 		Product mbp = neo4jTemplate.save(new Product("MacBook Pro", "Apple notebook", BigDecimal.valueOf(1299), tags));
 
-		// 需要注意顺序 - 下面在嵌入式测试环境中正常，在REST服务器环境下抛异常
-		@OnlineResource(referenceUrls = {
-				"https://jira.spring.io/browse/DATAGRAPH-324",
-				"http://stackoverflow.com/questions/29631052/neo4j-spring-data-error-adding-element-with-relatedtovia-relationship-to-inde" })
+		// 需要注意顺序
 		Order order = new Order();
 		order.setCustomer(dave);
 		order = neo4jTemplate.save(order);

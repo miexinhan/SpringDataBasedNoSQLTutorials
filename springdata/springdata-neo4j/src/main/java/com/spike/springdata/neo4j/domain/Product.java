@@ -19,7 +19,7 @@ import com.spike.springdata.neo4j.anno.SpringDataBook;
  * @author zhoujiagen<br/>
  *         Aug 12, 2015 9:07:06 PM
  */
-@SpringDataBook
+@SpringDataBook(chapter = { "7" })
 @NodeEntity
 public class Product extends AbstractEntity {
 	@Indexed(unique = true)

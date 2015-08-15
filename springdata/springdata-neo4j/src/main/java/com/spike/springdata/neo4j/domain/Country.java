@@ -11,7 +11,7 @@ import com.spike.springdata.neo4j.anno.SpringDataBook;
  * @author zhoujiagen<br/>
  *         Aug 12, 2015 8:54:18 PM
  */
-@SpringDataBook
+@SpringDataBook(chapter = { "7" })
 @NodeEntity
 public class Country extends AbstractEntity {
 

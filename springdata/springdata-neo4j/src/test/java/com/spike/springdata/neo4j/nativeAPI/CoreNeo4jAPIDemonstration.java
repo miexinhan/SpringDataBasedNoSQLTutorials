@@ -1,6 +1,5 @@
-package com.spike.springdata.neo4j;
+package com.spike.springdata.neo4j.nativeAPI;
 
-import static com.spike.springdata.neo4j.Neo4jAppConfig.Embedded_DB_DIR;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,19 +14,22 @@ import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.neo4j.kernel.impl.util.FileUtils;
 
-public class CoreNeo4jAPIDemonstration {
+import com.spike.springdata.neo4j.Neo4jAppDevConfig;
+import com.spike.springdata.neo4j.anno.SpringDataBook;
 
+@SpringDataBook(chapter = { "7" })
+public class CoreNeo4jAPIDemonstration {
 	private static final Logger logger = Logger.getLogger(CoreNeo4jAPIDemonstration.class);
 
 	public static void main(String[] args) {
 		try {
-			FileUtils.deleteRecursively(new File(Embedded_DB_DIR));
+			FileUtils.deleteRecursively(new File(Neo4jAppDevConfig.Embedded_DB_DIR));
 		} catch (IOException e) {
 			logger.error("remove file failed, refer: ", e);
 		}
 
 		// 创建嵌入式数据库
-		GraphDatabaseService gdb = new GraphDatabaseFactory().newEmbeddedDatabase(Embedded_DB_DIR);
+		GraphDatabaseService gdb = new GraphDatabaseFactory().newEmbeddedDatabase(Neo4jAppDevConfig.Embedded_DB_DIR);
 
 		try (Transaction tx = gdb.beginTx();) {// 开启事务
 			// 创建节点
@@ -70,18 +72,7 @@ public class CoreNeo4jAPIDemonstration {
 	 *         Aug 12, 2015 8:42:26 PM
 	 */
 	public enum Types implements RelationshipType {
-		RATED("rated");
-
-		private String name;
-
-		Types(String name) {
-			this.name = name;
-		}
-
-		public String getName() {
-			return name;
-		}
-
+		RATED
 	}
 
 }

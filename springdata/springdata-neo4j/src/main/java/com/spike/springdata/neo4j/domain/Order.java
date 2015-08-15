@@ -18,7 +18,7 @@ import com.spike.springdata.neo4j.anno.SpringDataBook;
  * @author zhoujiagen<br/>
  *         Aug 12, 2015 9:19:19 PM
  */
-@SpringDataBook
+@SpringDataBook(chapter = { "7" })
 @NodeEntity
 public class Order extends AbstractEntity {
 	@RelatedTo(type = "ORDERED", direction = Direction.INCOMING)

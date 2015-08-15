@@ -15,12 +15,7 @@ import org.springframework.data.neo4j.rest.SpringRestGraphDatabase;
 public class Neo4jAppConfig extends Neo4jConfiguration {
 
 	/**
-	 * 嵌入式数据库的本地文件目录
-	 */
-	public static final String Embedded_DB_DIR = "springdataneo4j.db";
-
-	/**
-	 * Neo4j服务器URL
+	 * URL of Neo4j server
 	 */
 	public static final String SERVER_URL = "http://localhost:7474/db/data";
 
@@ -31,22 +26,14 @@ public class Neo4jAppConfig extends Neo4jConfiguration {
 		setBasePackage("com.spike.springdata.neo4j");
 	}
 
-	@Bean
-	@Profile("DEV")
-	public GraphDatabaseService graphDatabaseServiceForTest() {
-		return new GraphDatabaseFactory().newEmbeddedDatabase(Embedded_DB_DIR);
-	}
-
 	// NOT WORKING!!!
 	@Bean
-	@Profile("ERROR")
 	public GraphDatabaseService graphDatabaseServiceWithError() {
 		SpringCypherRestGraphDatabase result = new SpringCypherRestGraphDatabase(SERVER_URL, "neo4j", "root");
 		return result;
 	}
 
 	@Bean
-	@Profile("PRODUCT")
 	public GraphDatabaseService graphDatabaseService() {
 		@SuppressWarnings("deprecation")
 		SpringRestGraphDatabase result = new SpringRestGraphDatabase(SERVER_URL, "neo4j", "root");

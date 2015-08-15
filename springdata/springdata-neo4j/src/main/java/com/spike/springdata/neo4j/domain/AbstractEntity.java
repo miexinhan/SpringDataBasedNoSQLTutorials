@@ -13,7 +13,7 @@ import com.spike.springdata.neo4j.anno.SpringDataBook;
  * @author zhoujiagen<br/>
  *         Aug 12, 2015 8:52:39 PM
  */
-@SpringDataBook
+@SpringDataBook(chapter = { "7" })
 public abstract class AbstractEntity {
 
 	@GraphId
