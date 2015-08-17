@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  *         Aug 15, 2015 4:47:46 PM
  */
 @Retention(RetentionPolicy.SOURCE)
-@Target(value = { ElementType.TYPE })
+@Target(value = { ElementType.TYPE, ElementType.METHOD })
 public @interface Neo4jInActionBook {
 	String[] chapter() default { "" };
 }
