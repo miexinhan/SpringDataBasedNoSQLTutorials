@@ -37,7 +37,10 @@ import com.spike.springdata.neo4j.anno.Neo4jInActionBook;
 @Neo4jInActionBook(chapter = { "4" })
 public class Neo4jAPICompreheansiveDemonstration {
 	private static final Logger logger = Logger.getLogger(Neo4jAPICompreheansiveDemonstration.class);
-
+	
+	/**
+	 * it's not a good practice!
+	 */
 	private static final String NEWLINE = System.getProperty("line.separator");
 
 	/**
@@ -336,21 +339,21 @@ public class Neo4jAPICompreheansiveDemonstration {
 	/**
 	 * properties enumeration for ease of access
 	 */
-	enum PropEnum {
+	private static enum PropEnum {
 		NAME, YEAR_OF_BIRTH, LOCKED, CARS_OWNED, TYPE, STARS
 	}
 
 	/**
 	 * node type enumeration for ease of access: {@link Label}
 	 */
-	enum NodeTypeEnum implements Label {
+	private static enum NodeTypeEnum implements Label {
 		USERS, MOVIES
 	}
 
 	/**
 	 * Relationship type definition as enumeration
 	 */
-	enum RelTypeEnum implements RelationshipType {
+	private static enum RelTypeEnum implements RelationshipType {
 		IS_FRIEND_OF, HAS_SEEN
 	}
 }

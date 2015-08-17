@@ -14,6 +14,7 @@ import org.neo4j.graphdb.index.IndexManager;
 
 import com.spike.springdata.neo4j.Neo4jAppDevConfig;
 import com.spike.springdata.neo4j.Neo4jAppUtils;
+import com.spike.springdata.neo4j.anno.Neo4jInActionBook;
 
 /**
  * DemonStration of Neo4j manual indexing using APIs
@@ -21,9 +22,13 @@ import com.spike.springdata.neo4j.Neo4jAppUtils;
  * @author zhoujiagen<br/>
  *         Aug 15, 2015 11:15:32 PM
  */
+@Neo4jInActionBook(chapter = { "5" })
 public class Neo4jManualIndexingDemonstration {
 	private static final Logger logger = Logger.getLogger(Neo4jManualIndexingDemonstration.class);
 
+	/**
+	 * it's not a good practice!
+	 */
 	private static final String NEWLINE = System.getProperty("line.separator");
 
 	private static final String names[] = { "Joanne Smith", "Kate Smith", "John Johnson" };
@@ -167,8 +172,8 @@ public class Neo4jManualIndexingDemonstration {
 
 	}
 
-	static void changeIndexValue(GraphDatabaseService gds, String indexName, String indexKey,
-			String sourceIndexValue, String targetIndexValue) {
+	static void changeIndexValue(GraphDatabaseService gds, String indexName, String indexKey, String sourceIndexValue,
+			String targetIndexValue) {
 		try (Transaction tx = gds.beginTx();) {
 			Index<Node> index = gds.index().forNodes(indexName);
 			IndexHits<Node> hits = index.get(indexKey, sourceIndexValue);
@@ -200,14 +205,14 @@ public class Neo4jManualIndexingDemonstration {
 		return result.substring(0, result.length() - 1);
 	}
 
-	enum PropEnum {
+	private static enum PropEnum {
 		NAME, EMAIL, AGE
 	}
 
 	/**
 	 * the indexes used for nodes
 	 */
-	enum NodeIndexEnum {
+	private static enum NodeIndexEnum {
 		USERS
 	}
 
