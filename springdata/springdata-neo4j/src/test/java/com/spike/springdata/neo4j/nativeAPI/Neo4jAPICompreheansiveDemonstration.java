@@ -1,9 +1,8 @@
 package com.spike.springdata.neo4j.nativeAPI;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.Executor;
 
 import org.apache.log4j.Logger;
 import org.neo4j.graphdb.Direction;
@@ -23,10 +22,10 @@ import org.neo4j.graphdb.traversal.Evaluators;
 import org.neo4j.graphdb.traversal.TraversalDescription;
 import org.neo4j.graphdb.traversal.Traverser;
 import org.neo4j.graphdb.traversal.Uniqueness;
-import org.neo4j.kernel.impl.util.FileUtils;
 import org.neo4j.tooling.GlobalGraphOperations;
 
 import com.spike.springdata.neo4j.Neo4jAppDevConfig;
+import com.spike.springdata.neo4j.Neo4jAppUtils;
 import com.spike.springdata.neo4j.anno.Neo4jInActionBook;
 
 /**
@@ -72,12 +71,8 @@ public class Neo4jAPICompreheansiveDemonstration {
 	static void prepare(String dbDirPath) {
 		logger.info(NEWLINE + "prepare start");
 
-		try {
-			FileUtils.deleteRecursively(new File(dbDirPath));
-		} catch (IOException e) {
-			logger.error("Fail to delete local database directory, refer", e);
-			throw new RuntimeException();
-		}
+		Neo4jAppUtils.clean(dbDirPath);
+
 		logger.info(NEWLINE + "prepare end");
 	}
 
