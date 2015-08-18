@@ -37,6 +37,8 @@ public class Neo4jManualIndexingDemonstration {
 
 	private static Long[] person_ids = new Long[3];
 
+	private static final String NODE_INDEX_NAME = "users";
+
 	public static void main(String[] args) {
 		Neo4jAppUtils.clean(Neo4jAppDevConfig.Embedded_DB_DIR);
 
@@ -46,19 +48,19 @@ public class Neo4jManualIndexingDemonstration {
 		populateGraphData(gds);
 
 		List<Node> persons = getNodesByIds(gds, person_ids);
-		createIndex(gds, persons.get(0), PropEnum.EMAIL.name(), emails[0]);
-		searchWithIndex(gds, PropEnum.EMAIL.name(), emails[0]);
+		createNodeIndex(gds, NODE_INDEX_NAME, persons.get(0), PropEnum.EMAIL.name(), emails[0]);
+		searchWithNodeIndex(gds, NODE_INDEX_NAME, PropEnum.EMAIL.name(), emails[0]);
 
-		createIndex(gds, persons.get(0), PropEnum.AGE.name(), ages[0]);
-		createIndex(gds, persons.get(1), PropEnum.AGE.name(), ages[1]);
-		createIndex(gds, persons.get(2), PropEnum.AGE.name(), ages[2]);
+		createNodeIndex(gds, NODE_INDEX_NAME, persons.get(0), PropEnum.AGE.name(), ages[0]);
+		createNodeIndex(gds, NODE_INDEX_NAME, persons.get(1), PropEnum.AGE.name(), ages[1]);
+		createNodeIndex(gds, NODE_INDEX_NAME, persons.get(2), PropEnum.AGE.name(), ages[2]);
 		searchWithIndexReturnMultipleResults(gds, PropEnum.AGE.name(), ages[1]);
 
 		// dealing with changed indexed entry
 		String newEmail = "jsmith_new@example.org";
 		changeIndexValue(gds, NodeIndexEnum.USERS.name(), PropEnum.EMAIL.name(), emails[0], newEmail);
-		searchWithIndex(gds, PropEnum.EMAIL.name(), emails[0]);
-		searchWithIndex(gds, PropEnum.EMAIL.name(), newEmail);
+		searchWithNodeIndex(gds, NODE_INDEX_NAME, PropEnum.EMAIL.name(), emails[0]);
+		searchWithNodeIndex(gds, NODE_INDEX_NAME, PropEnum.EMAIL.name(), newEmail);
 	}
 
 	static void populateGraphData(GraphDatabaseService gds) {
@@ -117,13 +119,14 @@ public class Neo4jManualIndexingDemonstration {
 		return result;
 	}
 
-	static void createIndex(GraphDatabaseService gds, Node node, String indexKey, Object indexValue) {
+	static void createNodeIndex(GraphDatabaseService gds, String indexName, Node node, String indexKey,
+			Object indexValue) {
 
 		try (Transaction tx = gds.beginTx();) {
 			// obtain a reference to IndexManager
 			IndexManager indexManager = gds.index();
 			// find or create an named index
-			Index<Node> index = indexManager.forNodes(indexKey);
+			Index<Node> index = indexManager.forNodes(indexName);
 			// 3 parameters: the indexed node, the index key, the indexed value
 			index.add(node, indexKey, indexValue);
 
@@ -134,11 +137,11 @@ public class Neo4jManualIndexingDemonstration {
 
 	}
 
-	static void searchWithIndex(GraphDatabaseService gds, String indexKey, String indexValue) {
+	static void searchWithNodeIndex(GraphDatabaseService gds, String indexName, String indexKey, String indexValue) {
 		logger.info(NEWLINE + "searchWithIndex(" + indexKey + "," + indexValue + ")");
 
 		try (Transaction tx = gds.beginTx();) {
-			Index<Node> index = gds.index().forNodes(indexKey);
+			Index<Node> index = gds.index().forNodes(indexName);
 
 			// search with index
 			IndexHits<Node> indexHits = index.get(indexKey, indexValue);

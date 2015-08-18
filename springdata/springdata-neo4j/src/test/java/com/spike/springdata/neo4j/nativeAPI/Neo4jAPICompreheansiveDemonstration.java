@@ -91,17 +91,17 @@ public class Neo4jAPICompreheansiveDemonstration {
 		// begin transaction
 		try (Transaction tx = gds.beginTx();) {
 			// create nodes
-			Node user1 = gds.createNode();
+			Node user1 = gds.createNode();//0
 			logger.info(NEWLINE + "create user:" + user1.getId());
 			USER1_ID = user1.getId();
-			Node user2 = gds.createNode();
+			Node user2 = gds.createNode();//1
 			logger.info(NEWLINE + "create user:" + user2.getId());
-			Node user3 = gds.createNode();
+			Node user3 = gds.createNode();//2
 			logger.info(NEWLINE + "create user:" + user3.getId());
 
-			Node movie1 = gds.createNode();
-			Node movie2 = gds.createNode();
-			Node movie3 = gds.createNode();
+			Node movie1 = gds.createNode();//3
+			Node movie2 = gds.createNode();//4
+			Node movie3 = gds.createNode();//5
 
 			// create relationships
 			user1.createRelationshipTo(user2, RelTypeEnum.IS_FRIEND_OF);
