@@ -1,0 +1,12 @@
+CREATE (user1:Users { name: 'John Johnson', type: 'User', email: 'jsmith@example.org', age: 35}),
+(user2:Users { name: 'Kate Smith', type: 'User', email: 'ksmith@example.org', age: 35}),
+(user3:Users { name: 'Jack Jeffries', type: 'User', email: 'jjeffries@example.org', age: 34}),
+(movie1:Movies { name: 'Fargo', type: 'Movie'}),
+(movie2:Movies { name: 'Alien', type: 'Movie'}),
+(movie3:Movies { name: 'Heat', type: 'Movie'}),
+(user1) -[:IS_FRIEND_OF]-> (user2),
+(user1) -[:IS_FRIEND_OF]-> (user3),
+(user1) -[:HAS_SEEN {stars: 5}]-> (movie1),
+(user2) -[:HAS_SEEN {stars: 3}]-> (movie3),
+(user3) -[:HAS_SEEN {stars: 4}]-> (movie1),
+(user3) -[:HAS_SEEN {stars: 5}]-> (movie2)

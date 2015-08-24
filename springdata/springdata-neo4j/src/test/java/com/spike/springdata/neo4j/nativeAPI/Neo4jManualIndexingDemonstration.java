@@ -1,6 +1,5 @@
 package com.spike.springdata.neo4j.nativeAPI;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -10,7 +9,6 @@ import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.neo4j.graphdb.index.Index;
 import org.neo4j.graphdb.index.IndexHits;
-import org.neo4j.graphdb.index.IndexManager;
 
 import com.spike.springdata.neo4j.Neo4jAppDevConfig;
 import com.spike.springdata.neo4j.Neo4jAppUtils;
@@ -47,18 +45,18 @@ public class Neo4jManualIndexingDemonstration {
 
 		populateGraphData(gds);
 
-		List<Node> persons = getNodesByIds(gds, person_ids);
-		createNodeIndex(gds, NODE_INDEX_NAME, persons.get(0), PropEnum.EMAIL.name(), emails[0]);
+		List<Node> persons = Neo4jAppUtils.getNodesByIds(gds, person_ids);
+		Neo4jAppUtils.createNodeIndex(gds, NODE_INDEX_NAME, persons.get(0), PropEnum.EMAIL.name(), emails[0]);
 		searchWithNodeIndex(gds, NODE_INDEX_NAME, PropEnum.EMAIL.name(), emails[0]);
 
-		createNodeIndex(gds, NODE_INDEX_NAME, persons.get(0), PropEnum.AGE.name(), ages[0]);
-		createNodeIndex(gds, NODE_INDEX_NAME, persons.get(1), PropEnum.AGE.name(), ages[1]);
-		createNodeIndex(gds, NODE_INDEX_NAME, persons.get(2), PropEnum.AGE.name(), ages[2]);
+		Neo4jAppUtils.createNodeIndex(gds, NODE_INDEX_NAME, persons.get(0), PropEnum.AGE.name(), ages[0]);
+		Neo4jAppUtils.createNodeIndex(gds, NODE_INDEX_NAME, persons.get(1), PropEnum.AGE.name(), ages[1]);
+		Neo4jAppUtils.createNodeIndex(gds, NODE_INDEX_NAME, persons.get(2), PropEnum.AGE.name(), ages[2]);
 		searchWithIndexReturnMultipleResults(gds, PropEnum.AGE.name(), ages[1]);
 
 		// dealing with changed indexed entry
 		String newEmail = "jsmith_new@example.org";
-		changeIndexValue(gds, NodeIndexEnum.USERS.name(), PropEnum.EMAIL.name(), emails[0], newEmail);
+		Neo4jAppUtils.changeIndexValue(gds, NodeIndexEnum.USERS.name(), PropEnum.EMAIL.name(), emails[0], newEmail);
 		searchWithNodeIndex(gds, NODE_INDEX_NAME, PropEnum.EMAIL.name(), emails[0]);
 		searchWithNodeIndex(gds, NODE_INDEX_NAME, PropEnum.EMAIL.name(), newEmail);
 	}
@@ -87,54 +85,6 @@ public class Neo4jManualIndexingDemonstration {
 		} catch (Exception e) {
 			logger.error("Strange things happeded when populate graph data, refer", e);
 		}
-	}
-
-	static Node getNodeById(GraphDatabaseService gds, Long nodeId) {
-		Node result = null;
-
-		try (Transaction tx = gds.beginTx();) {
-			result = gds.getNodeById(nodeId);
-
-			tx.success();
-		} catch (Exception e) {
-			logger.error("Strange things happeded when get node by its id, refer", e);
-		}
-
-		return result;
-	}
-
-	static List<Node> getNodesByIds(GraphDatabaseService gds, Long... nodeIds) {
-		List<Node> result = new ArrayList<Node>();
-
-		try (Transaction tx = gds.beginTx();) {
-			for (Long nodeId : nodeIds) {
-				result.add(gds.getNodeById(nodeId));
-			}
-
-			tx.success();
-		} catch (Exception e) {
-			logger.error("Strange things happeded when get nodes by their ids, refer", e);
-		}
-
-		return result;
-	}
-
-	static void createNodeIndex(GraphDatabaseService gds, String indexName, Node node, String indexKey,
-			Object indexValue) {
-
-		try (Transaction tx = gds.beginTx();) {
-			// obtain a reference to IndexManager
-			IndexManager indexManager = gds.index();
-			// find or create an named index
-			Index<Node> index = indexManager.forNodes(indexName);
-			// 3 parameters: the indexed node, the index key, the indexed value
-			index.add(node, indexKey, indexValue);
-
-			tx.success();
-		} catch (Exception e) {
-			logger.error("Strange things happeded when create index, refer", e);
-		}
-
 	}
 
 	static void searchWithNodeIndex(GraphDatabaseService gds, String indexName, String indexKey, String indexValue) {
@@ -171,25 +121,6 @@ public class Neo4jManualIndexingDemonstration {
 			tx.success();
 		} catch (Exception e) {
 			logger.error("Strange things happeded when search with index, and multiple results expected, refer", e);
-		}
-
-	}
-
-	static void changeIndexValue(GraphDatabaseService gds, String indexName, String indexKey, String sourceIndexValue,
-			String targetIndexValue) {
-		try (Transaction tx = gds.beginTx();) {
-			Index<Node> index = gds.index().forNodes(indexName);
-			IndexHits<Node> hits = index.get(indexKey, sourceIndexValue);
-			Node targetNode = hits.getSingle();
-			if (targetNode != null) {
-				// remove source indexed entry
-				index.remove(targetNode, indexKey, sourceIndexValue);
-				// create the new indexed entry
-				index.add(targetNode, indexKey, targetIndexValue);
-			}
-
-		} catch (Exception e) {
-			logger.error("Strange things happeded when changing index values, refer", e);
 		}
 
 	}
