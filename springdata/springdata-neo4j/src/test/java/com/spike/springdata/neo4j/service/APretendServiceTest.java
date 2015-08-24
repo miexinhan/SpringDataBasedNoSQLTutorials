@@ -5,8 +5,6 @@ import static org.junit.Assert.assertNotNull;
 import java.io.File;
 import java.io.IOException;
 
-import javax.transaction.TransactionManager;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,14 +14,19 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { Neo4jTransactionManagerConfig.class })
 public class APretendServiceTest {
 
 	@Autowired
-	@Qualifier("tx")
-	TransactionManager transactionManager;
+	@Qualifier("platformTxManager")
+	PlatformTransactionManager platformTransactionManager;
+
+	@Autowired
+	APretendService aPretendService;
 
 	@BeforeClass
 	public static void setUpBeforeClass() {
@@ -37,7 +40,7 @@ public class APretendServiceTest {
 	@Autowired
 	ApplicationContext applicationContext;
 
-	@Test
+	// @Test
 	public void resource() {
 		assertNotNull(applicationContext);
 		String beanNames[] = applicationContext.getBeanDefinitionNames();
@@ -45,8 +48,13 @@ public class APretendServiceTest {
 			System.out.println("|-" + beanName);
 		}
 
-		assertNotNull(transactionManager);
+		assertNotNull(platformTransactionManager);
+	}
 
+	@Transactional
+	@Test
+	public void createNodeViaAnnotatedMethod() {
+		aPretendService.createNodeViaAnnotatedMethod("name", 28);
 	}
 
 }

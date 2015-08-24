@@ -4,14 +4,16 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.neo4j.graphdb.factory.GraphDatabaseSettings;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.neo4j.config.EnableNeo4jRepositories;
 import org.springframework.data.neo4j.config.Neo4jConfiguration;
 
 import com.spike.springdata.neo4j.anno.Neo4jInActionBook;
+import com.spike.springdata.neo4j.service.Neo4jTransactionManagerConfig;
 
 @Configuration
-@EnableNeo4jRepositories
+@EnableNeo4jRepositories(excludeFilters = { @Filter(value = { Neo4jTransactionManagerConfig.class }) })
 public class Neo4jAppDevConfig extends Neo4jConfiguration {
 
 	/**
