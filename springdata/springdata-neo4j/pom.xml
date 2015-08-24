@@ -31,6 +31,13 @@
 			<version>3.3.2.RELEASE</version>
 		</dependency>
 
+		<!-- tx -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-neo4j-tx</artifactId>
+			<version>3.3.2.RELEASE</version>
+		</dependency>
+
 		<!-- validation -->
 		<dependency>
 			<groupId>org.hibernate</groupId>

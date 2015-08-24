@@ -89,7 +89,7 @@ public class Neo4jCypherAPIDemonstration {
 		executeCypherQuery(engine, sb.toString());
 	}
 
-	private static void populateGraphData(GraphDatabaseService gds, ExecutionEngine engine) {
+	static void populateGraphData(GraphDatabaseService gds, ExecutionEngine engine) {
 
 		StringBuilder sb = new StringBuilder();
 
