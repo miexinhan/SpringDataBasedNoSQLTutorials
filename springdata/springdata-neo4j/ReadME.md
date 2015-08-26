@@ -33,9 +33,24 @@ Integration test using embedded database for spring-data-neo4j.
 ### `SpringDataBookProdTest`
 Integration test using production database for spring-data-neo4j and spring-data-neo4j-rest.
 
-## 3.3 Spring in Action book
+## 3.3 Neo4j in Action book
 ### `Neo4jAPICompreheansiveDemonstration`
 A comprehensive demonstration of Neo4j native Java APIs.
+
+### `Neo4jCypherAPIDemonstration`
+A demonstration of Neo4j Cypher Java API usage.
+
+### `Neo4jManualIndexingDemonstration`
+A demonstration of manually create node indexes in Neo4j Java API.
+
+### `Neo4jSchemaIndexingDemonstration`
+A demonstration of create `Label` based index in Neo4j Java API. 	
+
+### `Neo4jTransactionDemonstration`
+A demonstration of explicitly acquire a read/write lock in transaction of Neo4j.
+
+### `Neo4jTransactionManagerConfig`
+Neo4j Transaction Manager Configuration in Spring JavaConfig style.
 
 ## 3.4 Graph Database book
 ### `CoreNeo4jAPIDemonstration`
