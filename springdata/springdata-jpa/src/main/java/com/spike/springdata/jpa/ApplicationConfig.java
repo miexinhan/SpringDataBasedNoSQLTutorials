@@ -26,12 +26,12 @@ import org.springframework.util.CollectionUtils;
 
 import com.spike.springdata.jpa.support.DataSourceIdentifier;
 import com.spike.springdata.jpa.support.DataSourceIdentifierResolver;
-import com.spike.springdata.jpa.support.JpaRepositoryFactoryBeanSupportingShard;
 import com.spike.springdata.jpa.support.MultipleTargetRoutingDataSource;
+import com.spike.springdata.jpa.support.jpa.CustomedRepositoryFactoryBean;
 
 @Configuration
 @ComponentScan
-@EnableJpaRepositories(basePackages = { "com.spike.springdata.jpa.repository" }, repositoryFactoryBeanClass = JpaRepositoryFactoryBeanSupportingShard.class)
+@EnableJpaRepositories(basePackages = { "com.spike.springdata.jpa.repository" }, repositoryFactoryBeanClass = CustomedRepositoryFactoryBean.class)
 @EnableTransactionManagement
 @PropertySource(value = "classpath:application-development.properties")
 public class ApplicationConfig {

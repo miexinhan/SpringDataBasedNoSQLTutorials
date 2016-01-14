@@ -1,7 +1,7 @@
 package com.spike.springdata.jpa.support;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
@@ -18,7 +18,7 @@ public final class MultipleTargetRoutingDataSource extends AbstractRoutingDataSo
 
 	private static final ThreadLocal<String> LOOKUPKEY = new ThreadLocal<String>();
 
-	private static final Set<String> ALL_DATASOURCE_KEYS = new HashSet<String>();
+	private static final List<String> ALL_DATASOURCE_KEYS = new ArrayList<String>();
 
 	@Override
 	protected Object determineCurrentLookupKey() {
@@ -49,7 +49,7 @@ public final class MultipleTargetRoutingDataSource extends AbstractRoutingDataSo
 	 * 
 	 * @return
 	 */
-	public static Set<String> availableTargets() {
+	public static List<String> availableTargets() {
 		return ALL_DATASOURCE_KEYS;
 	}
 
@@ -60,6 +60,9 @@ public final class MultipleTargetRoutingDataSource extends AbstractRoutingDataSo
 	 * @param target
 	 */
 	public static void addAvaiableTarget(String target) {
-		ALL_DATASOURCE_KEYS.add(target);
+		if (!ALL_DATASOURCE_KEYS.contains(target)) {
+			ALL_DATASOURCE_KEYS.add(target);
+		}
+
 	}
 }

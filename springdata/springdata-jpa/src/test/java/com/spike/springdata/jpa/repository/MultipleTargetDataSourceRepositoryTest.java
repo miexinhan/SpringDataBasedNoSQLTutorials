@@ -1,6 +1,6 @@
 package com.spike.springdata.jpa.repository;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -32,16 +32,25 @@ public class MultipleTargetDataSourceRepositoryTest extends JpaTestBase {
 	private AddressRespository addressRespository;
 
 	@Test
+	public void resource() {
+		Assert.assertNotNull(addressRespository);
+	}
+
+	@Test
+	public void testMethodInCustomedRepository() {
+		addressRespository.showRepositoryInfo();
+	}
+
+	@Test
 	public void testChangeDataSource() {
 
-		Set<String> avaiableDataSourceTargets = MultipleTargetRoutingDataSource.availableTargets();
-		String[] targets = avaiableDataSourceTargets.toArray(new String[] {});
+		List<String> avaiableDataSourceTargets = MultipleTargetRoutingDataSource.availableTargets();
 
 		Address address1 = new Address("新海村1", "南通", "中国");
-		this.saveOne(targets[0], address1);
+		this.saveOne(avaiableDataSourceTargets.get(0), address1);
 
 		Address address2 = new Address("新海村2", "南通", "中国");
-		this.saveOne(targets[1], address2);
+		this.saveOne(avaiableDataSourceTargets.get(1), address2);
 	}
 
 	@Transactional

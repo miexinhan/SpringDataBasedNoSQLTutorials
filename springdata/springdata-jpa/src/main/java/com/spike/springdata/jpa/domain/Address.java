@@ -1,6 +1,9 @@
 package com.spike.springdata.jpa.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+
+import com.spike.springdata.jpa.support.jpa.EntityEventListener;
 
 /**
  * 地址
@@ -9,6 +12,7 @@ import javax.persistence.Entity;
  *
  */
 @Entity
+@EntityListeners(EntityEventListener.class)
 @SuppressWarnings("serial")
 public class Address extends AbstractJpaEntity {
 	private String street;
@@ -46,6 +50,11 @@ public class Address extends AbstractJpaEntity {
 
 	public void setCountry(String country) {
 		this.country = country;
+	}
+
+	@Override
+	public String toString() {
+		return "Address [street=" + street + ", city=" + city + ", country=" + country + "]";
 	}
 
 }
