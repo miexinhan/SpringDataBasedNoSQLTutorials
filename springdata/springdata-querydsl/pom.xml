@@ -1,0 +1,145 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.spike</groupId>
+		<artifactId>springdata</artifactId>
+		<version>1.0.0-RELEASE</version>
+	</parent>
+	<artifactId>springdata-querydsl</artifactId>
+
+	<!-- Spring Data JDBC Extensions子项目：Oracle数据库增强和使用Querydsl进行类型安全的查询 -->
+	<!-- 1.2.1.RELEASE版本中Querydsl支持已经被废弃，建议直接使用Querydsl项目的Spring支持：https://github.com/querydsl/querydsl/tree/master/querydsl-sql-spring -->
+
+	<!-- Querydsl的介绍 -->
+	<!-- https://github.com/querydsl/querydsl -->
+	<!-- Querydsl is a framework which enables the construction of type-safe SQL-like queries for multiple backends including 
+		JPA, MongoDB and SQL in Java. -->
+	<!-- Instead of writing queries as inline strings or externalizing them into XML files they are constructed via a fluent 
+		API. -->
+
+	<properties>
+		<querydsl.version>3.7.3</querydsl.version>
+		<spring.data.jpa.version>1.8.0.RELEASE</spring.data.jpa.version>
+	</properties>
+
+	<dependencies>
+		<!-- Querydsl -->
+		<dependency>
+			<groupId>com.mysema.querydsl</groupId>
+			<artifactId>querydsl-apt</artifactId>
+			<version>${querydsl.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.mysema.querydsl</groupId>
+			<artifactId>querydsl-jpa</artifactId>
+			<version>${querydsl.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.mysema.querydsl</groupId>
+			<artifactId>querydsl-sql</artifactId>
+			<version>${querydsl.version}</version>
+		</dependency>
+
+		<!-- spring data jpa -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>${spring.data.jpa.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>jcl-over-slf4j</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!-- JPA API -->
+		<!-- <dependency> <groupId>javax.persistence</groupId> <artifactId>persistence-api</artifactId> <version>${javax.persistence.version}</version> 
+			</dependency> -->
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.1-api</artifactId>
+			<version>1.0.0.Final</version>
+		</dependency>
+		<!-- database -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.35</version>
+		</dependency>
+		<!-- JPA Provider (Hibernate) -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>4.3.6.Final</version>
+		</dependency>
+
+
+
+
+		<!-- 测试和日志工具 -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<!-- <scope>test</scope> -->
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+
+	</dependencies>
+
+
+	<build>
+		<plugins>
+			<!-- 生成javax.persistence.Entity注解的实体的查询实体 -->
+			<plugin>
+				<groupId>com.mysema.maven</groupId>
+				<artifactId>apt-maven-plugin</artifactId>
+				<version>1.1.3</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>process</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>target/generated-sources/java</outputDirectory>
+							<processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- 使用native SQL -->
+			<!-- http://www.querydsl.com/static/querydsl/2.7.3/reference/html/ch03s02.html -->
+			<!-- <plugin> <groupId>com.mysema.querydsl</groupId> <artifactId>querydsl-maven-plugin</artifactId> <version>${querydsl.version}</version> 
+				<executions> <execution> <goals> <goal>export</goal> </goals> </execution> </executions> <configuration> <jdbcDriver>com.mysql.jdbc.Driver</jdbcDriver> 
+				<jdbcUrl>jdbc:mysql://localhost:3306/querydsl?useUnicode=yes&amp;characterEncoding=UTF-8</jdbcUrl> <jdbcUser>root</jdbcUser> 
+				<jdbcPassword>root</jdbcPassword> <packageName>com.spike.querydsl.domain</packageName> <targetFolder>${project.basedir}/target/generated-sources/java</targetFolder> 
+				</configuration> <dependencies> <dependency> <groupId>mysql</groupId> <artifactId>mysql-connector-java</artifactId> <version>5.1.35</version> 
+				</dependency> </dependencies> </plugin> -->
+
+		</plugins>
+	</build>
+
+
+</project>

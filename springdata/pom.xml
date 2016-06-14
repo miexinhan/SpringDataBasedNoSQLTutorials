@@ -14,6 +14,7 @@
 		<module>springdata-jpa</module>
 		<module>springdata-redis</module>
 		<module>springdata-mongodb</module>
+		<module>springdata-querydsl</module>
 	</modules>
 
 	<properties>
