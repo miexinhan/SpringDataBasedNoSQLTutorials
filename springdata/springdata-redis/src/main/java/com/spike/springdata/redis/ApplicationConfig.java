@@ -18,11 +18,10 @@ public class ApplicationConfig {
 
 	@Bean(name = "redisConnectionFactory")
 	public RedisConnectionFactory redisConnectionFactory() {
-		JedisConnectionFactory factory = new JedisConnectionFactory();
+		// JedisConnectionFactory factory = new JedisConnectionFactory();
 
 		// with sentinel configuration
-		// JedisConnectionFactory factory = new
-		// JedisConnectionFactory(this.sentinelConfig());
+		JedisConnectionFactory factory = new JedisConnectionFactory(this.sentinelConfig());
 
 		factory.setHostName("localhost");
 		factory.setPort(6379);
@@ -40,12 +39,16 @@ public class ApplicationConfig {
 		return factory;
 	}
 
-	// @Bean
+	/**
+	 * sentinel mode: $ redis-server etc/redis/sentinel.conf --sentinel
+	 * @return
+	 */
+	@Bean
 	public RedisSentinelConfiguration sentinelConfig() {
 		RedisSentinelConfiguration result = //
 		new RedisSentinelConfiguration().master("mymaster")//
-				.sentinel("127.0.0.1", 26379)//
-				.sentinel("127.0.0.1", 26380);
+				.sentinel("127.0.0.1", 5000)//
+				/*.sentinel("127.0.0.1", 180000)*/;
 
 		return result;
 	}

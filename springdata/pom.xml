@@ -15,6 +15,7 @@
 		<module>springdata-redis</module>
 		<module>springdata-mongodb</module>
 		<module>springdata-querydsl</module>
+		<module>springdata-mybatis</module>
 	</modules>
 
 	<properties>
