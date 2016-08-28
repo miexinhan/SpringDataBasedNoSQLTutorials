@@ -12,6 +12,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 public final class MyBatisSqlSessionFactory {
 	private static SqlSessionFactory sqlSessionFactory;
 
+	/** 可以为每个环境设置一个SqlSessionFactory */
 	public static SqlSessionFactory getSqlSessionFactory() {
 		if (sqlSessionFactory == null) {
 			InputStream inputStream;

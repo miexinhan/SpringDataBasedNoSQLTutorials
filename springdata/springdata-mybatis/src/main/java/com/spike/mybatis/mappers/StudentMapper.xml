@@ -6,8 +6,13 @@
 		<result property="name" column="name" />
 		<result property="email" column="email" />
 		<result property="dob" column="dob" />
+		<result property="phone" column="phone" />
 	</resultMap>
 
+	<!-- 对于 List,Collection,Iterable 类型,MyBatis 将返回 java.util.ArrayList -->
+ 	<!--对于 Map 类型,MyBatis 将返回 java.util.HashMap -->
+ 	<!--对于 Set 类型,MyBatis 将返回 java.util.HashSet -->
+  	<!--对于 SortedSet 类型,MyBatis 将返回 java.util.TreeSet -->
 	<select id="findAllStudents" resultMap="StudentResult">
 		SELECT * FROM STUDENTS
 	</select>
@@ -17,8 +22,10 @@
 		FROM STUDENTS WHERE STUD_ID=#{Id}
 	</select>
 
+	<!-- 自动生成主键 -->
+	<!--useGeneratedKeys="true" keyProperty="studId"  -->
 	<insert id="insertStudent" parameterType="Student">
-		INSERT INTO STUDENTS(STUD_ID,NAME,EMAIL,DOB)
-		VALUES(#{studId},#{name},#{email},#{dob})
+		INSERT INTO STUDENTS(STUD_ID,NAME,EMAIL,DOB, PHONE)
+		VALUES(#{studId},#{name},#{email},#{dob}, #{phone})
 	</insert>
 </mapper>

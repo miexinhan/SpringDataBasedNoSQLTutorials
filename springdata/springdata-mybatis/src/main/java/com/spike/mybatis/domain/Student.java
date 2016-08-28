@@ -8,13 +8,24 @@ public class Student {
 	private String email;
 	private Date dob;
 
+	private PhoneNumber phone;
+
 	public Student() {}
 
-	public Student(Integer studId, String name, String email, Date dob) {
+	public Student(Integer studId, String name, String email, Date dob, PhoneNumber phone) {
 		this.studId = studId;
 		this.name = name;
 		this.email = email;
 		this.dob = dob;
+		this.phone = phone;
+	}
+
+	public PhoneNumber getPhone() {
+		return phone;
+	}
+
+	public void setPhone(PhoneNumber phone) {
+		this.phone = phone;
 	}
 
 	public Integer getStudId() {

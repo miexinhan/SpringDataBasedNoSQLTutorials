@@ -15,8 +15,9 @@ public class StudentService {
 
 	/**
 	 * <pre>
-	 * or
+	 * SqlSession不是线程安全的。
 	 * 
+	 * 或者使用
 	 * Student student = (Student)sqlSession.selectOne(
 	 * "com.mybatis3.mappers.StudentMapper.findStudentById", studId);
 	 * 

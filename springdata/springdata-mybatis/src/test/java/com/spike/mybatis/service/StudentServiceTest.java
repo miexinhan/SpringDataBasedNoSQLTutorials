@@ -8,6 +8,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.spike.mybatis.domain.PhoneNumber;
 import com.spike.mybatis.domain.Student;
 
 public class StudentServiceTest {
@@ -34,7 +35,7 @@ public class StudentServiceTest {
 
 	@Test
 	public void testFindStudentById() {
-		Student student = studentService.findStudentById(1);
+		Student student = studentService.findStudentById(3);
 		Assert.assertNotNull(student);
 		System.out.println(student);
 	}
@@ -47,6 +48,7 @@ public class StudentServiceTest {
 		student.setName("student_" + id);
 		student.setEmail("student_" + id + "gmail.com");
 		student.setDob(new Date());
+		student.setPhone(new PhoneNumber("135-3333-4444"));
 		studentService.createStudent(student);
 		Student newStudent = studentService.findStudentById(id);
 		Assert.assertNotNull(newStudent);

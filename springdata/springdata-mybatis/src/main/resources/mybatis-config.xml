@@ -1,10 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+	<!-- 属性定义 -->
+	<properties resource="application.properties">
+		<!-- 覆盖属性文件中的属性定义 -->
+		<property name="username" value="root" />
+		<property name="password" value="root" />
+	</properties>
+
+	<!-- 设置项 -->
+	<settings>
+		<setting name="cacheEnabled" value="true" />
+	</settings>
+
+	<!-- 类型别名定义 -->
 	<typeAliases>
 		<typeAlias alias="Student" type="com.spike.mybatis.domain.Student" />
+		<!-- 为包下JavaBean 注册一个小写字母开头的非完全限定的类名形式的别名 -->
+		<!-- <package name="com.spike.mybatis.domain"/> -->
 	</typeAliases>
-	
+
+	<!-- 类型处理器定义 -->
+	<!-- MyBatis对于以下的类型使用内建的类型处理器: -->
+	<!-- 所有的基本数据类型、基本类型的包裹类型、byte[]、java.util.Date、java.sql.Date、java,sql.Time、java.sql.Timestamp、java枚举类型等。 -->
+	<!--所以当MyBatis发现属性的类型属于上述类型,他会使用对应的类型处理器将值设置到PreparedStatement中,同样地,当从SQL结果集构建JavaBean时,也有类似的过程 -->
+	<typeHandlers>
+		<typeHandler handler="com.spike.mybatis.typehandlers.PhoneNumberTypeHandler" />
+		<!-- <package name="com.spike.mybatis.typehandlers" /> -->
+	</typeHandlers>
+
+	<!-- 环境定义 -->
 	<environments default="development">
 		<environment id="development">
 			<transactionManager type="JDBC" />
@@ -15,9 +40,20 @@
 				<property name="password" value="root" />
 			</dataSource>
 		</environment>
+
+		<environment id="production">
+			<transactionManager type="MANAGED" />
+			<dataSource type="JNDI">
+				<property name="data_source" value="java:comp/jdbc/MyBatisDemoDS" />
+			</dataSource>
+		</environment>
 	</environments>
-	
+
+	<!-- 映射器定义: resource, url, class或包-->
 	<mappers>
 		<mapper resource="com/spike/mybatis/mappers/StudentMapper.xml" />
+		<!-- <mapper url="file:///D:/mybatisdemo/mappers/TutorMapper.xml" /> -->
+		<!-- <mapper class="com.mybatis3.mappers.TutorMapper" /> -->
+		<!-- <package name="com.spike.mybatis.mappers" /> -->
 	</mappers>
 </configuration>
