@@ -12,6 +12,11 @@ Spring Data Elasticsearch教程。
 
 # 1 有关日期的问题
 
+日志：
+
+	failed to execute bulk item (index) index {[book_index][book][4], source[{"id":4,"title":"国际新闻","content":"美国留给伊拉克的是个烂摊子吗","price":13.3,"publishDate":1474969636144}]}
+	MapperParsingException[failed to parse [publishDate]]; nested: IllegalArgumentException[Invalid format: "1474969636144" is malformed at "6144"];
+
 实体定义：
 
 	@Document(indexName = "book_index", type = "book")
