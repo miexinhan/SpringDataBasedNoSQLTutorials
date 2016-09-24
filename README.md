@@ -10,6 +10,8 @@ This project is dedicated to play with two forms of NoSQL databases:
 
 follow the stream of semantic linked data
 
++ Redis
+
 + Column Family: HBase
 
 as a preparation of spiking hadoop ecosystems
@@ -17,3 +19,9 @@ as a preparation of spiking hadoop ecosystems
 + JPA (JSR 317, JSR 338)
 
 as final view of specification-supported Java based RDBMS development
+
++ QueryDsl
+
++ MyBatis 3
+
++ ElasticSearch
