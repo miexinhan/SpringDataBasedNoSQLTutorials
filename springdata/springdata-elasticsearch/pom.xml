@@ -1,37 +1,29 @@
-<?xml version="1.0"?>
-<project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.spike</groupId>
 		<artifactId>springdata</artifactId>
 		<version>1.0.0-RELEASE</version>
 	</parent>
-
-	<artifactId>springdata-redis</artifactId>
-	<name>springdata-redis</name>
-	<url>http://maven.apache.org</url>
+	<groupId>com.spike.springdata</groupId>
+	<artifactId>springdata-elasticsearch</artifactId>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<spring.data.es.version>2.0.3.RELEASE</spring.data.es.version>
+		<spring.data.es.spring.version>4.2.8.RELEASE</spring.data.es.spring.version>
 	</properties>
 
 	<dependencies>
 
-		<!-- spring-data-redis -->
+		<!-- spring-data-elasticsearch -->
+		<!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-elasticsearch -->
 		<dependency>
 			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-redis</artifactId>
-			<version>1.6.0.RELEASE</version>
+			<artifactId>spring-data-elasticsearch</artifactId>
+			<version>${spring.data.es.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>redis.clients</groupId>
-			<artifactId>jedis</artifactId>
-			<version>2.7.3</version>
-		</dependency>
-
-
 
 		<!-- log -->
 		<dependency>
@@ -47,21 +39,17 @@
 			<artifactId>log4j</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-			<version>1.1.1</version>
-		</dependency>
-
 		<!-- test -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
+			<version>${spring.data.es.spring.version}</version><!--$NO-MVN-MAN-VER$-->
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 	</dependencies>
 </project>

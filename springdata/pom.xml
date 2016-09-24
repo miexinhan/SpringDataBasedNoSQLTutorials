@@ -16,6 +16,7 @@
 		<module>springdata-mongodb</module>
 		<module>springdata-querydsl</module>
 		<module>springdata-mybatis</module>
+		<module>springdata-elasticsearch</module>
 	</modules>
 
 	<properties>
