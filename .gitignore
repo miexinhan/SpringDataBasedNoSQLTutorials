@@ -18,3 +18,4 @@ hs_err_pid*
 *.prefs
 *.project
 *.sh
+springdata/.DS_Store

@@ -16,6 +16,10 @@ Spring Data Elasticsearch教程。
 
 	failed to execute bulk item (index) index {[book_index][book][4], source[{"id":4,"title":"国际新闻","content":"美国留给伊拉克的是个烂摊子吗","price":13.3,"publishDate":1474969636144}]}
 	MapperParsingException[failed to parse [publishDate]]; nested: IllegalArgumentException[Invalid format: "1474969636144" is malformed at "6144"];
+	
+定位到
+
+	ElasticsearchTemplate#indexRequestBuilder.setSource(resultsMapper.getEntityMapper().mapToString(query.getObject()));
 
 实体定义：
 
