@@ -17,6 +17,7 @@
 		<module>springdata-querydsl</module>
 		<module>springdata-mybatis</module>
 		<module>springdata-elasticsearch</module>
+		<module>springdata-hbase</module>
 	</modules>
 
 	<properties>
