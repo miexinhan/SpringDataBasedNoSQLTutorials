@@ -30,4 +30,11 @@
 		<name>hbase.table.sanity.checks</name>
 		<value>false</value>
 	</property>
+
+	<!-- 默认版本数量 -->
+	<property>
+		<name>hbase.column.max.version</name>
+		<value>3</value>
+		<!-- <source>hbase-default.xml</source> -->
+	</property>
 </configuration>

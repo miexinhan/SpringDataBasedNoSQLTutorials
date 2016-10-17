@@ -15,6 +15,8 @@ import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.client.Table;
 import org.apache.hadoop.hbase.util.Bytes;
 
+import com.spike.springdata.hbase.client.util.HBaseClientHelper;
+
 /**
  * 
  * <pre>
@@ -37,9 +39,10 @@ public class HBaseClientExample {
 	public static void main(String[] args) throws IOException {
 
 		Configuration conf = HBaseConfiguration.create();
-
+		HBaseClientHelper.generateFinalConfig();
+		
 		Connection connection = ConnectionFactory.createConnection(conf);
-
+		
 		try {
 
 			Table table = connection.getTable(TableName.valueOf("testtable"));
@@ -66,7 +69,8 @@ public class HBaseClientExample {
 						System.out.println("Found row: " + rr);
 					}
 
-					// The other approach is to use a foreach loop. Scanners are iterable!
+					// The other approach is to use a foreach loop. Scanners are
+					// iterable!
 					// for (Result rr : scanner) {
 					// System.out.println("Found row: " + rr);
 					// }
