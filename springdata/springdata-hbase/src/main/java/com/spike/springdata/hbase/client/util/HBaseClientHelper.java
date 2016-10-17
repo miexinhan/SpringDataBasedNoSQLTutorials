@@ -88,6 +88,8 @@ public class HBaseClientHelper {
 		}
 
 		HTableDescriptor tableDescriptor = new HTableDescriptor(TableName.valueOf(tableName));
+		HColumnDescriptor columnDescriptor = new HColumnDescriptor(cfName);
+		columnDescriptor.setMaxVersions(3);// 默认最大版本
 		tableDescriptor.addFamily(new HColumnDescriptor(cfName));
 		// CONFIGURATION...
 		createTable(admin, tableDescriptor);
@@ -185,6 +187,7 @@ public class HBaseClientHelper {
 		}
 
 		HColumnDescriptor columnDescriptor = new HColumnDescriptor(cfName);
+		columnDescriptor.setMaxVersions(3); // 列最大版本数量
 		// CONFIGURATION...
 		// columnDescriptor.setCompactionCompressionType(Algorithm.GZ);
 		// columnDescriptor.setMaxVersions(HConstants.ALL_VERSIONS);

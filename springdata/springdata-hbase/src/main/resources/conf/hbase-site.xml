@@ -13,22 +13,23 @@
 	under the License. */ -->
 <configuration>
 
-	<!-- 20161013 Standalone mode -->
+	<!-- 20161013 -->
 	<!-- https://hbase.apache.org/book.html#quickstart -->
-	<property>
-		<name>hbase.rootdir</name>
-		<value>file:///Users/zhang/data/hbase</value>
-	</property>
+	<!--<property> <name>hbase.rootdir</name> <value>file:///Users/zhang/data/hbase</value> 
+		</property> -->
 	<property>
 		<name>hbase.zookeeper.property.dataDir</name>
 		<value>/Users/zhang/data/zookeeper</value>
 	</property>
 
 
-	<!-- by pass sanity checks -->
 	<property>
-		<name>hbase.table.sanity.checks</name>
-		<value>false</value>
+		<name>hbase.cluster.distributed</name>
+		<value>true</value>
+	</property>
+	<property>
+		<name>hbase.rootdir</name>
+		<value>hdfs://localhost:9000/hbase</value>
 	</property>
 
 	<!-- 默认版本数量 -->

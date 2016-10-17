@@ -12,8 +12,14 @@ import com.spike.springdata.hbase.domain.WebTable;
 /**
  * Put示例
  * 
- * TODO 如何配置Cell中多版本?
+ * > put 'webtable', 'com.cnn.www', 'anchor:cssnsi.com', 'CNN'
  * 
+ * 如何获取Cell中多版本:
+ * > create 'webtable', 'anchor'
+ * > put 'webtable', 'com.cnn.www', 'anchor:cssnsi.com', 'CNN'
+ * > put 'webtable', 'com.cnn.www', 'anchor:cssnsi.com', 'CNN'
+ * > scan 'webtable', {VERSIONS => 3} # 返回多个版本
+ * TODO Admin创建的表无多个版本!!! 是setMaxVersion啊
  * @author zhoujiagen
  *
  */
