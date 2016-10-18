@@ -15,6 +15,7 @@ import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.Admin;
 import org.apache.hadoop.hbase.client.Connection;
 import org.apache.hadoop.hbase.client.ConnectionFactory;
+import org.apache.hadoop.hbase.client.Table;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,14 +25,15 @@ public class HBaseClientHelper {
 
 	/**
 	 * <pre>
-	 * 生成最终的配置文件, 用于检验.
+	 * 加载默认配置.
 	 * 
+	 * 副作用: 生成最终的配置文件, 用于检验.
 	 * source元素值表示配置来源文件
 	 * </pre>
 	 * 
 	 * @throws IOException
 	 */
-	public static void generateFinalConfig() throws IOException {
+	public static Configuration loadDefaultConfiguration() throws IOException {
 		Configuration conf = HBaseConfiguration.create();
 		// 从类路径加载资源
 		conf.addResource("conf/hbase-site.xml");
@@ -40,6 +42,8 @@ public class HBaseClientHelper {
 		try (OutputStream os = new FileOutputStream(outputPath);) {
 			conf.writeXml(os);
 		}
+
+		return conf;
 	}
 
 	// 获取连接
@@ -56,10 +60,19 @@ public class HBaseClientHelper {
 		return connection.getAdmin();
 	}
 
+	// 释放资源
+	public static void releaseResource(Connection connection, Admin admin, Table table) throws IOException {
+		releaseConnection(connection);
+		releaseAdmin(admin);
+		releaseTable(table);
+	}
+
 	// 释放链接
 	public static void releaseConnection(Connection connection) throws IOException {
 		if (connection == null)
 			return;
+
+		LOG.info("释放Connection.");
 		connection.close();
 	}
 
@@ -67,7 +80,18 @@ public class HBaseClientHelper {
 	public static void releaseAdmin(Admin admin) throws IOException {
 		if (admin == null)
 			return;
+
+		LOG.info("释放Admin.");
 		admin.close();
+	}
+
+	// 释放表
+	public static void releaseTable(Table table) throws IOException {
+		if (table == null)
+			return;
+
+		LOG.info("释放Table.");
+		table.close();
 	}
 
 	// 创建表
@@ -90,8 +114,8 @@ public class HBaseClientHelper {
 		HTableDescriptor tableDescriptor = new HTableDescriptor(TableName.valueOf(tableName));
 		HColumnDescriptor columnDescriptor = new HColumnDescriptor(cfName);
 		columnDescriptor.setMaxVersions(3);// 默认最大版本
-		tableDescriptor.addFamily(new HColumnDescriptor(cfName));
-		// CONFIGURATION...
+		tableDescriptor.addFamily(columnDescriptor);
+		// ADD MORE COLUMN CONFIGURATION...
 		createTable(admin, tableDescriptor);
 	}
 
@@ -188,7 +212,7 @@ public class HBaseClientHelper {
 
 		HColumnDescriptor columnDescriptor = new HColumnDescriptor(cfName);
 		columnDescriptor.setMaxVersions(3); // 列最大版本数量
-		// CONFIGURATION...
+		// ADD MORE COLUMN CONFIGURATION...
 		// columnDescriptor.setCompactionCompressionType(Algorithm.GZ);
 		// columnDescriptor.setMaxVersions(HConstants.ALL_VERSIONS);
 

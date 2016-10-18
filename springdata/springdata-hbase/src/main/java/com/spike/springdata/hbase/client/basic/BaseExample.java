@@ -16,6 +16,9 @@ import com.spike.springdata.hbase.client.util.HBaseClientHelper;
 /**
  * 示例支持基类
  * 
+ * 
+ * TODO HBase Shell中如何查看Schema
+ * 
  * @author zhoujiagen
  */
 public abstract class BaseExample {
@@ -87,12 +90,7 @@ public abstract class BaseExample {
 			doSomething();
 		} finally {
 			LOG.info("执行清理工作");
-			if (table != null)
-				table.close();
-			if (admin != null)
-				admin.close();
-			if (connection != null)
-				connection.close();
+			HBaseClientHelper.releaseResource(connection, admin, table);
 		}
 
 	}

@@ -18,8 +18,9 @@ import com.spike.springdata.hbase.domain.WebTable;
  * > create 'webtable', 'anchor'
  * > put 'webtable', 'com.cnn.www', 'anchor:cssnsi.com', 'CNN'
  * > put 'webtable', 'com.cnn.www', 'anchor:cssnsi.com', 'CNN'
- * > scan 'webtable', {VERSIONS => 3} # 返回多个版本
- * TODO Admin创建的表无多个版本!!! 是setMaxVersion啊
+ * # 返回多个版本
+ * > scan 'webtable', {VERSIONS => 3}
+ * 
  * @author zhoujiagen
  *
  */

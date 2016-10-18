@@ -1002,6 +1002,10 @@
 
 		<!-- Test related dependencies -->
 		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>com.google.code.findbugs</groupId>
 			<artifactId>annotations</artifactId>
 			<version>1.3.9</version>

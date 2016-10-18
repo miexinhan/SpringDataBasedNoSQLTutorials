@@ -3,7 +3,6 @@ package com.spike.springdata.hbase.client;
 import java.io.IOException;
 
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.Connection;
 import org.apache.hadoop.hbase.client.ConnectionFactory;
@@ -38,11 +37,10 @@ public class HBaseClientExample {
 
 	public static void main(String[] args) throws IOException {
 
-		Configuration conf = HBaseConfiguration.create();
-		HBaseClientHelper.generateFinalConfig();
-		
+		Configuration conf = HBaseClientHelper.loadDefaultConfiguration();
+
 		Connection connection = ConnectionFactory.createConnection(conf);
-		
+
 		try {
 
 			Table table = connection.getTable(TableName.valueOf("testtable"));
