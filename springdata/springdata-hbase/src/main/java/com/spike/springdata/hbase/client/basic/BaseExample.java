@@ -17,7 +17,7 @@ import com.spike.springdata.hbase.client.util.HBaseClientHelper;
  * 示例支持基类
  * 
  * 
- * TODO HBase Shell中如何查看Schema
+ * TODO 如何查看Schema(HBase Shell?)
  * 
  * @author zhoujiagen
  */
@@ -31,6 +31,7 @@ public abstract class BaseExample {
 	}
 
 	protected Configuration conf;
+	// heavy-weighted and thread-safe object
 	protected Connection connection;
 	protected Admin admin;
 	protected Table table;

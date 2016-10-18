@@ -14,6 +14,7 @@ import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HTableDescriptor;
+import org.apache.hadoop.hbase.NamespaceDescriptor;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.Admin;
 import org.apache.hadoop.hbase.client.Connection;
@@ -50,17 +51,48 @@ public class HBaseClientHelper {
 		return conf;
 	}
 
-	// 获取连接
-	public static Connection connection(Configuration config) throws IOException {
-		if (config == null)
+	/**
+	 * 获取表{@link Table}, 可转型为{@link HTable}.
+	 * 
+	 * @param connection
+	 * @param tableName
+	 * @return
+	 * @throws IOException
+	 * 
+	 * @see {@link Connection#getTable(TableName)}
+	 * @see {@link Connection#getBufferedMutator(TableName)}
+	 * @see {@link Connection#getRegionLocator(TableName)}
+	 */
+	public static Table table(Connection connection, String tableName) throws IOException {
+		if (connection == null) {
+			LOG.warn("connection is null.");
 			return null;
+		}
+		if (StringUtils.isBlank(tableName)) {
+			LOG.warn("tableName is empty or null.");
+			return null;
+		}
+
+		return connection.getTable(TableName.valueOf(tableName));
+	}
+
+	// 获取连接
+	// Connection is heavy-weighted and thread-safe object, and should create
+	// once then use always
+	public static Connection connection(Configuration config) throws IOException {
+		if (config == null) {
+			LOG.warn("config is null.");
+			return null;
+		}
 		return ConnectionFactory.createConnection(config);
 	}
 
 	// 获取管理客户端
 	public static Admin admin(Connection connection) throws IOException {
-		if (connection == null)
+		if (connection == null) {
+			LOG.warn("connection is null.");
 			return null;
+		}
 		return connection.getAdmin();
 	}
 
@@ -156,6 +188,8 @@ public class HBaseClientHelper {
 			LOG.warn("tableName is empty or null.");
 			return;
 		}
+
+		LOG.info("Disable table[" + tableName + "]");
 		admin.disableTable(TableName.valueOf(tableName));
 	}
 
@@ -169,6 +203,8 @@ public class HBaseClientHelper {
 			LOG.warn("tableName is empty or null.");
 			return;
 		}
+
+		LOG.info("Enable table[" + tableName + "]");
 		admin.enableTable(TableName.valueOf(tableName));
 	}
 
@@ -224,7 +260,72 @@ public class HBaseClientHelper {
 		admin.addColumn(TableName.valueOf(tableName), columnDescriptor);
 	}
 
+	// 修改命名空间
+	public static void modifyNamespace(Admin admin, NamespaceDescriptor nsDescriptor) throws IOException {
+		if (admin == null) {
+			LOG.warn("admin is null");
+			return;
+		}
+		if (nsDescriptor == null) {
+			LOG.warn("nsDescriptor is null");
+			return;
+		}
+
+		LOG.info("Modify NameSpace with parameter: " + nsDescriptor);
+		admin.modifyNamespace(nsDescriptor);
+	}
+
+	// 修改表
+	public static void modifyTable(Admin admin, String tableName, HTableDescriptor latestTableDescriptor)
+			throws IOException {
+		if (admin == null) {
+			LOG.warn("admin is null");
+			return;
+		}
+		if (StringUtils.isBlank(tableName)) {
+			LOG.warn("tableName is empty or null.");
+			return;
+		}
+		if (latestTableDescriptor == null) {
+			LOG.warn("latestTableDescriptor is null");
+			return;
+		}
+
+		LOG.info("Modify Table[" + tableName + "] with parameter: " + latestTableDescriptor);
+		admin.modifyTable(TableName.valueOf(tableName), latestTableDescriptor);
+	}
+
+	// 修改列族
+	public static void modifyColumnFamily(Admin admin, String tableName, String cfName,
+			HColumnDescriptor latestColumnDescriptor) throws IOException {
+
+		if (admin == null) {
+			LOG.warn("admin is null");
+			return;
+		}
+		if (StringUtils.isBlank(tableName)) {
+			LOG.warn("tableName is empty or null.");
+			return;
+		}
+		if (StringUtils.isBlank(cfName)) {
+			LOG.warn("cfName is empty or null");
+			return;
+		}
+		if (latestColumnDescriptor == null) {
+			LOG.warn("latestColumnDescriptor is null");
+			return;
+		}
+
+		disableTable(admin, tableName);
+
+		LOG.info("Modify Table[" + tableName + "], Column[" + cfName + "] with parameter: " + latestColumnDescriptor);
+		admin.modifyColumn(TableName.valueOf(tableName), latestColumnDescriptor);
+
+		enableTable(admin, tableName);
+	}
+
 	// 检查表中列族是否存在
+	// use Table.exists(Get) instead
 	public static boolean checkColumnFamilyExists(Admin admin, String tableName, String cfName) throws IOException {
 		boolean result = false;
 		HTableDescriptor[] tableDescs = admin.getTableDescriptors(Arrays.asList(tableName));
