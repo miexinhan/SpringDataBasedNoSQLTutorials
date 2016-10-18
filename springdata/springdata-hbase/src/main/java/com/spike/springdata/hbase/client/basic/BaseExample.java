@@ -84,6 +84,11 @@ public abstract class BaseExample {
 		return connection;
 	}
 
+	/**
+	 * delegate to {@link #doSomething()}, 提供事后资源清理.
+	 * 
+	 * @throws IOException
+	 */
 	public void doWork() throws IOException {
 
 		try {

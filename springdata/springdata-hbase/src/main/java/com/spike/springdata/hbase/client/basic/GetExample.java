@@ -5,13 +5,12 @@ import java.io.IOException;
 import org.apache.hadoop.hbase.client.Get;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.util.Bytes;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import com.spike.springdata.hbase.client.util.HBaseClientHelper;
 import com.spike.springdata.hbase.domain.WebTable;
 
 public class GetExample extends BaseExample {
-	private static final Logger LOG = LoggerFactory.getLogger(GetExample.class);
+//	private static final Logger LOG = LoggerFactory.getLogger(GetExample.class);
 
 	public GetExample(String tableName, String... columnFamilyNames) {
 		super(tableName, columnFamilyNames);
@@ -28,10 +27,20 @@ public class GetExample extends BaseExample {
 	protected void doSomething() throws IOException {
 		Get get = new Get(Bytes.toBytes(AppConstants.ROWKEY_1));
 		get.addColumn(Bytes.toBytes(WebTable.CF_ANCHOR), Bytes.toBytes(WebTable.C_ANCHOR_CSSNSI_COM));
+		// 设置获取最大版本数量
 		get.setMaxVersions(3);
 
 		Result result = table.get(get);
-		LOG.info(result.toString());
+		// LOG.info("result=" + result.toString());
+		//
+		// // 获取Cell
+		// List<Cell> cells = result.listCells();
+		// LOG.info("Cells=" + cells);
+		//
+		// CellScanner cellScanner = result.cellScanner();
+		// while (cellScanner.advance()) {
+		// LOG.info("Cell=" + cellScanner.current());
+		// }
+		HBaseClientHelper.renderer(result);
 	}
-
 }

@@ -5,9 +5,12 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
+import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HTableDescriptor;
@@ -15,6 +18,7 @@ import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.Admin;
 import org.apache.hadoop.hbase.client.Connection;
 import org.apache.hadoop.hbase.client.ConnectionFactory;
+import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.Table;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -257,6 +261,35 @@ public class HBaseClientHelper {
 			return;
 		}
 		admin.deleteColumn(TableName.valueOf(tableName), cfName.getBytes("UTF-8"));
+	}
+
+	// 打印结果
+	public static void renderer(Result result) throws IOException {
+		LOG.info("==============================================");
+		if (result == null) {
+
+			LOG.info("Result is empty.");
+
+		} else {
+
+			// 获取Cell
+			List<Cell> cells = result.listCells();
+			if (CollectionUtils.isNotEmpty(cells)) {
+				LOG.info("Result=" + result.toString());
+				for (int i = 0, len = cells.size(); i < len; i++) {
+					LOG.info("Cell[" + i + "]=" + cells.get(i));
+				}
+			} else {
+				LOG.info("Result is empty.");
+			}
+
+			// CellScanner cellScanner = result.cellScanner();
+			// while (cellScanner.advance()) {
+			// LOG.info("Cell=" + cellScanner.current());
+			// }
+		}
+
+		LOG.info("==============================================");
 	}
 
 }
