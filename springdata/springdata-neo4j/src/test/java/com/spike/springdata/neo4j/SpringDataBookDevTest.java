@@ -30,7 +30,6 @@ import com.spike.springdata.neo4j.domain.Tag;
 
 /**
  * Spring Data Book中案例测试，使用{@link Neo4jTemplate}
- * 
  * @author zhoujiagen<br/>
  *         Aug 12, 2015 9:28:00 PM
  */
@@ -41,84 +40,90 @@ import com.spike.springdata.neo4j.domain.Tag;
 @TransactionConfiguration(defaultRollback = false)
 public class SpringDataBookDevTest {
 
-	@Autowired
-	private Neo4jTemplate neo4jTemplate;
+  @Autowired
+  private Neo4jTemplate neo4jTemplate;
 
-	@BeforeClass
-	public static void setUpBeforeClass() throws IOException {
-		// 清空嵌入式数据库的本地目录
-		FileUtils.deleteRecursively(new File(Neo4jAppDevConfig.Embedded_DB_DIR));
-	}
+  @BeforeClass
+  public static void setUpBeforeClass() throws IOException {
+    // 清空嵌入式数据库的本地目录
+    FileUtils.deleteRecursively(new File(Neo4jAppDevConfig.Embedded_DB_DIR));
+  }
 
-	@Test
-	public void resources() {
-		assertNotNull(neo4jTemplate);
-	}
+  @Test
+  public void resources() {
+    assertNotNull(neo4jTemplate);
+  }
 
-	@Test
-	@Transactional
-	public void populateGraph() {
-		Customer dave = neo4jTemplate.save(new Customer("Dave", "Matthew", "dave@dmband.com"));
-		neo4jTemplate.save(new Customer("Carter", "Beauford", "carter@dmband"));
-		neo4jTemplate.save(new Customer("Boyd", "Tinsley", "boyd@dmband.com"));
+  @Test
+  @Transactional
+  public void populateGraph() {
+    Customer dave = neo4jTemplate.save(new Customer("Dave", "Matthew", "dave@dmband.com"));
+    neo4jTemplate.save(new Customer("Carter", "Beauford", "carter@dmband"));
+    neo4jTemplate.save(new Customer("Boyd", "Tinsley", "boyd@dmband.com"));
 
-		Country usa = neo4jTemplate.save(new Country("US", "United States"));
-		Address address = neo4jTemplate.save(new Address("27 Broadway", "New York", usa));
-		Set<Address> addresses = new HashSet<Address>();
-		addresses.add(address);
-		dave.setAddresses(addresses);
-		dave = neo4jTemplate.save(dave);
+    Country usa = neo4jTemplate.save(new Country("US", "United States"));
+    Address address = neo4jTemplate.save(new Address("27 Broadway", "New York", usa));
+    Set<Address> addresses = new HashSet<Address>();
+    addresses.add(address);
+    dave.setAddresses(addresses);
+    dave = neo4jTemplate.save(dave);
 
-		Set<Tag> tags = new HashSet<Tag>();
-		Tag tag = new Tag();
-		tag.setName("Apple");
-		tags.add(tag);
-		Product iPad = neo4jTemplate.save(new Product("iPad", "Apple tablet device", BigDecimal.valueOf(499), tags));
-		Product mbp = neo4jTemplate.save(new Product("MacBook Pro", "Apple notebook", BigDecimal.valueOf(1299), tags));
+    Set<Tag> tags = new HashSet<Tag>();
+    Tag tag = new Tag();
+    tag.setName("Apple");
+    tags.add(tag);
+    Product iPad =
+        neo4jTemplate
+            .save(new Product("iPad", "Apple tablet device", BigDecimal.valueOf(499), tags));
+    Product mbp =
+        neo4jTemplate.save(new Product("MacBook Pro", "Apple notebook", BigDecimal.valueOf(1299),
+            tags));
 
-		// 需要注意顺序
-		Order order = new Order();
-		order.setCustomer(dave);
-		order = neo4jTemplate.save(order);
+    // 需要注意顺序
+    Order order = new Order();
+    order.setCustomer(dave);
+    order = neo4jTemplate.save(order);
 
-		Set<LineItem> lineItems = new HashSet<LineItem>();
-		LineItem lineItem = new LineItem();
-		lineItem.setProduct(iPad);
-		lineItem.setAmount(2);
-		lineItem.setOrder(order);
-		lineItem = neo4jTemplate.save(lineItem);
-		lineItems.add(lineItem);
+    Set<LineItem> lineItems = new HashSet<LineItem>();
+    LineItem lineItem = new LineItem();
+    lineItem.setProduct(iPad);
+    lineItem.setAmount(2);
+    lineItem.setOrder(order);
+    lineItem = neo4jTemplate.save(lineItem);
+    lineItems.add(lineItem);
 
-		lineItem = new LineItem();
-		lineItem.setProduct(mbp);
-		lineItem.setAmount(1);
-		lineItem.setOrder(order);
-		lineItem = neo4jTemplate.save(lineItem);
-		lineItems.add(lineItem);
+    lineItem = new LineItem();
+    lineItem.setProduct(mbp);
+    lineItem.setAmount(1);
+    lineItem.setOrder(order);
+    lineItem = neo4jTemplate.save(lineItem);
+    lineItems.add(lineItem);
 
-		order.setLineItems(lineItems);
-		neo4jTemplate.save(order);
-	}
+    order.setLineItems(lineItems);
+    neo4jTemplate.save(order);
+  }
 
-	@Test
-	public void errors() {
-		Customer dave = neo4jTemplate.save(new Customer("Dave", "Matthew", "dave@dmband.com"));
+  @Test
+  public void errors() {
+    Customer dave = neo4jTemplate.save(new Customer("Dave", "Matthew", "dave@dmband.com"));
 
-		Order order = new Order();
-		order.setCustomer(dave);
-		order = neo4jTemplate.save(order);
+    Order order = new Order();
+    order.setCustomer(dave);
+    order = neo4jTemplate.save(order);
 
-		Set<Tag> tags = new HashSet<Tag>();
-		Tag tag = new Tag();
-		tag.setName("Apple");
-		tags.add(tag);
-		Product iPad = neo4jTemplate.save(new Product("iPad", "Apple tablet device", BigDecimal.valueOf(499), tags));
+    Set<Tag> tags = new HashSet<Tag>();
+    Tag tag = new Tag();
+    tag.setName("Apple");
+    tags.add(tag);
+    Product iPad =
+        neo4jTemplate
+            .save(new Product("iPad", "Apple tablet device", BigDecimal.valueOf(499), tags));
 
-		LineItem lineItem = new LineItem();
-		lineItem.setProduct(iPad);
-		lineItem.setAmount(2);
-		lineItem.setOrder(order);
-		lineItem = neo4jTemplate.save(lineItem);
-	}
+    LineItem lineItem = new LineItem();
+    lineItem.setProduct(iPad);
+    lineItem.setAmount(2);
+    lineItem.setOrder(order);
+    lineItem = neo4jTemplate.save(lineItem);
+  }
 
 }

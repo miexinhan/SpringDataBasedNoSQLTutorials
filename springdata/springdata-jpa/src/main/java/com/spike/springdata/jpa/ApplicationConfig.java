@@ -31,114 +31,115 @@ import com.spike.springdata.jpa.support.jpa.CustomedRepositoryFactoryBean;
 
 @Configuration
 @ComponentScan
-@EnableJpaRepositories(basePackages = { "com.spike.springdata.jpa.repository" }, repositoryFactoryBeanClass = CustomedRepositoryFactoryBean.class)
+@EnableJpaRepositories(basePackages = { "com.spike.springdata.jpa.repository" },
+    repositoryFactoryBeanClass = CustomedRepositoryFactoryBean.class)
 @EnableTransactionManagement
 @PropertySource(value = "classpath:application-development.properties")
 public class ApplicationConfig {
 
-	private static final Logger LOG = Logger.getLogger(ApplicationConfig.class);
+  private static final Logger LOG = Logger.getLogger(ApplicationConfig.class);
 
-	@Autowired
-	private Environment env;
+  @Autowired
+  private Environment env;
 
-	// @Bean
-	// public DataSource dataSource() {
-	// DriverManagerDataSource driverManagerDataSource = new
-	// DriverManagerDataSource();
-	//
-	// driverManagerDataSource.setDriverClassName(env.getProperty("spring.datasource.driverClassName"));
-	// driverManagerDataSource.setUrl(env.getProperty("spring.datasource.url"));
-	// driverManagerDataSource.setUsername(env.getProperty("spring.datasource.username"));
-	// driverManagerDataSource.setPassword(env.getProperty("spring.datasource.password"));
-	//
-	// return driverManagerDataSource;
-	// }
+  // @Bean
+  // public DataSource dataSource() {
+  // DriverManagerDataSource driverManagerDataSource = new
+  // DriverManagerDataSource();
+  //
+  // driverManagerDataSource.setDriverClassName(env.getProperty("spring.datasource.driverClassName"));
+  // driverManagerDataSource.setUrl(env.getProperty("spring.datasource.url"));
+  // driverManagerDataSource.setUsername(env.getProperty("spring.datasource.username"));
+  // driverManagerDataSource.setPassword(env.getProperty("spring.datasource.password"));
+  //
+  // return driverManagerDataSource;
+  // }
 
-	@Bean
-	public DataSource dataSource() {
-		MultipleTargetRoutingDataSource result = new MultipleTargetRoutingDataSource();
+  @Bean
+  public DataSource dataSource() {
+    MultipleTargetRoutingDataSource result = new MultipleTargetRoutingDataSource();
 
-		DataSourceIdentifierResolver resolver = new DataSourceIdentifierResolver();
+    DataSourceIdentifierResolver resolver = new DataSourceIdentifierResolver();
 
-		List<DataSourceIdentifier> dataSourceIdentifiers = resolver.resolve("application-development");
+    List<DataSourceIdentifier> dataSourceIdentifiers = resolver.resolve("application-development");
 
-		Map<Object, Object> targetDataSources = new HashMap<Object, Object>();
-		if (!CollectionUtils.isEmpty(dataSourceIdentifiers)) {
-			for (DataSourceIdentifier dataSourceIdentifier : dataSourceIdentifiers) {
-				targetDataSources
-						.put(dataSourceIdentifier.getIdentifier(), this.targetDataSource(dataSourceIdentifier));
+    Map<Object, Object> targetDataSources = new HashMap<Object, Object>();
+    if (!CollectionUtils.isEmpty(dataSourceIdentifiers)) {
+      for (DataSourceIdentifier dataSourceIdentifier : dataSourceIdentifiers) {
+        targetDataSources.put(dataSourceIdentifier.getIdentifier(),
+          this.targetDataSource(dataSourceIdentifier));
 
-				// record available data source target in global context
-				MultipleTargetRoutingDataSource.addAvaiableTarget(dataSourceIdentifier.getIdentifier());
-			}
+        // record available data source target in global context
+        MultipleTargetRoutingDataSource.addAvaiableTarget(dataSourceIdentifier.getIdentifier());
+      }
 
-			result.setTargetDataSources(targetDataSources);
+      result.setTargetDataSources(targetDataSources);
 
-			// set the first one as the default
-			String deaultDataSourceIdentifier = dataSourceIdentifiers.get(0).getIdentifier();
-			LOG.info("ROUTE TO " + deaultDataSourceIdentifier);
-			result.setDefaultTargetDataSource(targetDataSources.get(deaultDataSourceIdentifier));
+      // set the first one as the default
+      String deaultDataSourceIdentifier = dataSourceIdentifiers.get(0).getIdentifier();
+      LOG.info("ROUTE TO " + deaultDataSourceIdentifier);
+      result.setDefaultTargetDataSource(targetDataSources.get(deaultDataSourceIdentifier));
 
-			// set default data source target in global context
-			MultipleTargetRoutingDataSource.setTarget(deaultDataSourceIdentifier);
+      // set default data source target in global context
+      MultipleTargetRoutingDataSource.setTarget(deaultDataSourceIdentifier);
 
-			result.afterPropertiesSet();
-		}
+      result.afterPropertiesSet();
+    }
 
-		return result;
-	}
+    return result;
+  }
 
-	/**
-	 * construct a data source base on an java bean, <br>
-	 * which is wrapped of property files
-	 * 
-	 * @param dataSourceIdentifier
-	 * @return
-	 */
-	private DataSource targetDataSource(DataSourceIdentifier dataSourceIdentifier) {
-		DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
+  /**
+   * construct a data source base on an java bean, <br>
+   * which is wrapped of property files
+   * @param dataSourceIdentifier
+   * @return
+   */
+  private DataSource targetDataSource(DataSourceIdentifier dataSourceIdentifier) {
+    DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
 
-		driverManagerDataSource.setDriverClassName(dataSourceIdentifier.getDriverClassName());
-		driverManagerDataSource.setUrl(dataSourceIdentifier.getUrl());
-		driverManagerDataSource.setUsername(dataSourceIdentifier.getUsername());
-		driverManagerDataSource.setPassword(dataSourceIdentifier.getPassword());
+    driverManagerDataSource.setDriverClassName(dataSourceIdentifier.getDriverClassName());
+    driverManagerDataSource.setUrl(dataSourceIdentifier.getUrl());
+    driverManagerDataSource.setUsername(dataSourceIdentifier.getUsername());
+    driverManagerDataSource.setPassword(dataSourceIdentifier.getPassword());
 
-		return driverManagerDataSource;
-	}
+    return driverManagerDataSource;
+  }
 
-	@Bean
-	public EntityManagerFactory entityManagerFactory() {
-		HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-		vendorAdapter.setGenerateDdl(true);
-		vendorAdapter.setShowSql(true);
-		vendorAdapter.setDatabase(Database.MYSQL);
+  @Bean
+  public EntityManagerFactory entityManagerFactory() {
+    HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+    vendorAdapter.setGenerateDdl(true);
+    vendorAdapter.setShowSql(true);
+    vendorAdapter.setDatabase(Database.MYSQL);
 
-		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
-		factory.setJpaVendorAdapter(vendorAdapter);
-		factory.setPackagesToScan("com.spike.springdata.jpa.domain");
+    LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
+    factory.setJpaVendorAdapter(vendorAdapter);
+    factory.setPackagesToScan("com.spike.springdata.jpa.domain");
 
-		factory.setDataSource(this.dataSource());// set the data source
-		// factory.setJtaDataSource(this.dataSource());
+    factory.setDataSource(this.dataSource());// set the data source
+    // factory.setJtaDataSource(this.dataSource());
 
-		Properties jpaProperties = new Properties();
-		jpaProperties.put("hibernate.dialect", env.getRequiredProperty("hibernate.dialect"));
-		jpaProperties.put("hibernate.hbm2ddl.auto", env.getRequiredProperty("hibernate.hbm2ddl.auto"));
-		jpaProperties.put("hibernate.ejb.naming_strategy", env.getRequiredProperty("hibernate.ejb.naming_strategy"));
-		jpaProperties.put("hibernate.show_sql", env.getRequiredProperty("hibernate.show_sql"));
-		jpaProperties.put("hibernate.format_sql", env.getRequiredProperty("hibernate.format_sql"));
-		factory.setJpaProperties(jpaProperties);
+    Properties jpaProperties = new Properties();
+    jpaProperties.put("hibernate.dialect", env.getRequiredProperty("hibernate.dialect"));
+    jpaProperties.put("hibernate.hbm2ddl.auto", env.getRequiredProperty("hibernate.hbm2ddl.auto"));
+    jpaProperties.put("hibernate.ejb.naming_strategy",
+      env.getRequiredProperty("hibernate.ejb.naming_strategy"));
+    jpaProperties.put("hibernate.show_sql", env.getRequiredProperty("hibernate.show_sql"));
+    jpaProperties.put("hibernate.format_sql", env.getRequiredProperty("hibernate.format_sql"));
+    factory.setJpaProperties(jpaProperties);
 
-		factory.afterPropertiesSet();
+    factory.afterPropertiesSet();
 
-		return factory.getObject();
-	}
+    return factory.getObject();
+  }
 
-	@Bean
-	public JpaTransactionManager transactionManager() {
-		JpaTransactionManager txManager = new JpaTransactionManager();
-		txManager.setEntityManagerFactory(this.entityManagerFactory());
+  @Bean
+  public JpaTransactionManager transactionManager() {
+    JpaTransactionManager txManager = new JpaTransactionManager();
+    txManager.setEntityManagerFactory(this.entityManagerFactory());
 
-		return txManager;
-	}
+    return txManager;
+  }
 
 }

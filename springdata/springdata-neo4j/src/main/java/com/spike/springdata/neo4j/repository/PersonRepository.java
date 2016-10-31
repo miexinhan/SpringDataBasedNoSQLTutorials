@@ -10,7 +10,7 @@ import com.spike.springdata.neo4j.domain.Person;
 @Repository
 public interface PersonRepository extends CrudRepository<Person, String> {
 
-	Person findByName(String name);
+  Person findByName(String name);
 
-	Set<Person> findByTeammatesName(String name);
+  Set<Person> findByTeammatesName(String name);
 }

@@ -8,51 +8,50 @@ import com.spike.springdata.neo4j.anno.SpringDataBook;
 
 /**
  * 关系：产品项
- * 
  * @author zhoujiagen<br/>
  *         Aug 12, 2015 9:24:34 PM
  */
 @SpringDataBook(chapter = { "7" })
 @RelationshipEntity(type = "ITEMS")
 public class LineItem extends AbstractEntity {
-	@StartNode
-	private Order order;
+  @StartNode
+  private Order order;
 
-	@EndNode
-	private Product product;
-	private int amount;
+  @EndNode
+  private Product product;
+  private int amount;
 
-	public LineItem() {
-	}
+  public LineItem() {
+  }
 
-	public LineItem(Order order, Product product, int amount) {
-		this.order = order;
-		this.product = product;
-		this.amount = amount;
-	}
+  public LineItem(Order order, Product product, int amount) {
+    this.order = order;
+    this.product = product;
+    this.amount = amount;
+  }
 
-	public Order getOrder() {
-		return order;
-	}
+  public Order getOrder() {
+    return order;
+  }
 
-	public void setOrder(Order order) {
-		this.order = order;
-	}
+  public void setOrder(Order order) {
+    this.order = order;
+  }
 
-	public Product getProduct() {
-		return product;
-	}
+  public Product getProduct() {
+    return product;
+  }
 
-	public void setProduct(Product product) {
-		this.product = product;
-	}
+  public void setProduct(Product product) {
+    this.product = product;
+  }
 
-	public int getAmount() {
-		return amount;
-	}
+  public int getAmount() {
+    return amount;
+  }
 
-	public void setAmount(int amount) {
-		this.amount = amount;
-	}
+  public void setAmount(int amount) {
+    this.amount = amount;
+  }
 
 }

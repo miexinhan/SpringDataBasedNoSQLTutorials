@@ -17,47 +17,47 @@ import org.springframework.transaction.jta.JtaTransactionManager;
 @Configuration
 @ComponentScan
 public class Neo4jTransactionManagerConfig {
-	public static final String Embedded_DB_DIR = "springdataneo4j.db";
+  public static final String Embedded_DB_DIR = "springdataneo4j.db";
 
-	@Bean
-	public GraphDatabaseService graphDatabaseService() {
-		GraphDatabaseService result = new GraphDatabaseFactory().newEmbeddedDatabase(Embedded_DB_DIR);
+  @Bean
+  public GraphDatabaseService graphDatabaseService() {
+    GraphDatabaseService result = new GraphDatabaseFactory().newEmbeddedDatabase(Embedded_DB_DIR);
 
-		// register transaction events
-		result.registerTransactionEventHandler(new TransactionEventHandler<Object>() {
+    // register transaction events
+    result.registerTransactionEventHandler(new TransactionEventHandler<Object>() {
 
-			@Override
-			public Object beforeCommit(TransactionData data) throws Exception {
-				System.out.println("===beforeCommit");
-				return null;
-			}
+      @Override
+      public Object beforeCommit(TransactionData data) throws Exception {
+        System.out.println("===beforeCommit");
+        return null;
+      }
 
-			@Override
-			public void afterCommit(TransactionData data, Object state) {
-				System.out.println("===afterCommit");
-			}
+      @Override
+      public void afterCommit(TransactionData data, Object state) {
+        System.out.println("===afterCommit");
+      }
 
-			@Override
-			public void afterRollback(TransactionData data, Object state) {
-				System.out.println("===afterRollback");
-			}
-		});
+      @Override
+      public void afterRollback(TransactionData data, Object state) {
+        System.out.println("===afterRollback");
+      }
+    });
 
-		return result;
-	}
+    return result;
+  }
 
-	@Bean
-	@Qualifier("txManager")
-	public TransactionManager transactionManager() {
-		TransactionManager result = new Neo4jEmbeddedTransactionManager(graphDatabaseService());
-		return result;
-	}
+  @Bean
+  @Qualifier("txManager")
+  public TransactionManager transactionManager() {
+    TransactionManager result = new Neo4jEmbeddedTransactionManager(graphDatabaseService());
+    return result;
+  }
 
-	@Bean
-	@Qualifier("platformTxManager")
-	public PlatformTransactionManager platformTransactionManager() {
-		PlatformTransactionManager result = new JtaTransactionManager(transactionManager());
-		return result;
-	}
+  @Bean
+  @Qualifier("platformTxManager")
+  public PlatformTransactionManager platformTransactionManager() {
+    PlatformTransactionManager result = new JtaTransactionManager(transactionManager());
+    return result;
+  }
 
 }

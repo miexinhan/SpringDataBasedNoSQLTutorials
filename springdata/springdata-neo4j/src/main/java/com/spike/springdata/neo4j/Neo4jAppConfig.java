@@ -12,29 +12,30 @@ import org.springframework.data.neo4j.rest.SpringRestGraphDatabase;
 @EnableNeo4jRepositories
 public class Neo4jAppConfig extends Neo4jConfiguration {
 
-	/**
-	 * URL of Neo4j server
-	 */
-	public static final String SERVER_URL = "http://localhost:7474/db/data";
+  /**
+   * URL of Neo4j server
+   */
+  public static final String SERVER_URL = "http://localhost:7474/db/data";
 
-	/**
-	 * Must use {@link #setBasePackage(String...)}!!!
-	 */
-	public Neo4jAppConfig() {
-		setBasePackage("com.spike.springdata.neo4j");
-	}
+  /**
+   * Must use {@link #setBasePackage(String...)}!!!
+   */
+  public Neo4jAppConfig() {
+    setBasePackage("com.spike.springdata.neo4j");
+  }
 
-	// NOT WORKING!!!
-	@Bean
-	public GraphDatabaseService graphDatabaseServiceWithError() {
-		SpringCypherRestGraphDatabase result = new SpringCypherRestGraphDatabase(SERVER_URL, "neo4j", "root");
-		return result;
-	}
+  // NOT WORKING!!!
+  @Bean
+  public GraphDatabaseService graphDatabaseServiceWithError() {
+    SpringCypherRestGraphDatabase result =
+        new SpringCypherRestGraphDatabase(SERVER_URL, "neo4j", "root");
+    return result;
+  }
 
-	@Bean
-	public GraphDatabaseService graphDatabaseService() {
-		@SuppressWarnings("deprecation")
-		SpringRestGraphDatabase result = new SpringRestGraphDatabase(SERVER_URL, "neo4j", "root");
-		return result;
-	}
+  @Bean
+  public GraphDatabaseService graphDatabaseService() {
+    @SuppressWarnings("deprecation")
+    SpringRestGraphDatabase result = new SpringRestGraphDatabase(SERVER_URL, "neo4j", "root");
+    return result;
+  }
 }

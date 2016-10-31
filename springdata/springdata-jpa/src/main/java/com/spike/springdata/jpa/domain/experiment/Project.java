@@ -10,36 +10,36 @@ import com.spike.springdata.jpa.domain.AbstractJpaEntity;
 @Entity
 @SuppressWarnings("serial")
 public class Project extends AbstractJpaEntity {
-	private String name;
+  private String name;
 
-	/**
-	 * the non-owner side of many-to-many association (mappedBy)
-	 */
-	@ManyToMany(mappedBy = "projects")
-	private List<Employee> employees;
+  /**
+   * the non-owner side of many-to-many association (mappedBy)
+   */
+  @ManyToMany(mappedBy = "projects")
+  private List<Employee> employees;
 
-	public Project() {
-	}
+  public Project() {
+  }
 
-	public Project(String name, List<Employee> employees) {
-		this.name = name;
-		this.employees = employees;
-	}
+  public Project(String name, List<Employee> employees) {
+    this.name = name;
+    this.employees = employees;
+  }
 
-	public String getName() {
-		return name;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	public List<Employee> getEmployees() {
-		return employees;
-	}
+  public List<Employee> getEmployees() {
+    return employees;
+  }
 
-	public void setEmployees(List<Employee> employees) {
-		this.employees = employees;
-	}
+  public void setEmployees(List<Employee> employees) {
+    this.employees = employees;
+  }
 
 }

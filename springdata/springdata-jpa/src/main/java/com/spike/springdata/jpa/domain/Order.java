@@ -15,79 +15,77 @@ import javax.persistence.TemporalType;
 
 /**
  * 订单
- * 
  * @author zhoujiagen
- *
  */
 @Entity
 // conflict with SQL keywords`order`
 @Table(name = "ORDERS")
 @SuppressWarnings("serial")
 public class Order extends AbstractJpaEntity {
-	@Temporal(value = TemporalType.TIMESTAMP)
-	private Date date;// 日期
+  @Temporal(value = TemporalType.TIMESTAMP)
+  private Date date;// 日期
 
-	@ManyToOne
-	private Customer customer;
+  @ManyToOne
+  private Customer customer;
 
-	@ManyToOne
-	private Address shippingAddress;
+  @ManyToOne
+  private Address shippingAddress;
 
-	@ManyToOne
-	private Address billingAddress;
+  @ManyToOne
+  private Address billingAddress;
 
-	@OneToMany(cascade = { CascadeType.ALL }, orphanRemoval = true)
-	@JoinColumn(name = "ORDER_ID")
-	private List<LineItem> lineItems = new ArrayList<LineItem>();
+  @OneToMany(cascade = { CascadeType.ALL }, orphanRemoval = true)
+  @JoinColumn(name = "ORDER_ID")
+  private List<LineItem> lineItems = new ArrayList<LineItem>();
 
-	private String status;
+  private String status;
 
-	public Date getDate() {
-		return date;
-	}
+  public Date getDate() {
+    return date;
+  }
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
+  public void setDate(Date date) {
+    this.date = date;
+  }
 
-	public Customer getCustomer() {
-		return customer;
-	}
+  public Customer getCustomer() {
+    return customer;
+  }
 
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
-	}
+  public void setCustomer(Customer customer) {
+    this.customer = customer;
+  }
 
-	public Address getShippingAddress() {
-		return shippingAddress;
-	}
+  public Address getShippingAddress() {
+    return shippingAddress;
+  }
 
-	public void setShippingAddress(Address shippingAddress) {
-		this.shippingAddress = shippingAddress;
-	}
+  public void setShippingAddress(Address shippingAddress) {
+    this.shippingAddress = shippingAddress;
+  }
 
-	public Address getBillingAddress() {
-		return billingAddress;
-	}
+  public Address getBillingAddress() {
+    return billingAddress;
+  }
 
-	public void setBillingAddress(Address billingAddress) {
-		this.billingAddress = billingAddress;
-	}
+  public void setBillingAddress(Address billingAddress) {
+    this.billingAddress = billingAddress;
+  }
 
-	public List<LineItem> getLineItems() {
-		return lineItems;
-	}
+  public List<LineItem> getLineItems() {
+    return lineItems;
+  }
 
-	public void setLineItems(List<LineItem> lineItems) {
-		this.lineItems = lineItems;
-	}
+  public void setLineItems(List<LineItem> lineItems) {
+    this.lineItems = lineItems;
+  }
 
-	public String getStatus() {
-		return status;
-	}
+  public String getStatus() {
+    return status;
+  }
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
+  public void setStatus(String status) {
+    this.status = status;
+  }
 
 }

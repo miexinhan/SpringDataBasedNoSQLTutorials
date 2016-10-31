@@ -7,28 +7,27 @@ import javax.persistence.Embeddable;
 
 /**
  * 邮箱
- * 
  * @author zhoujiagen
- *
  */
 @Embeddable
 public class EmailAddress {
-	private static final String EMAIL_REGEX = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-	private static final Pattern PATTERN = Pattern.compile(EMAIL_REGEX);
+  private static final String EMAIL_REGEX =
+      "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+  private static final Pattern PATTERN = Pattern.compile(EMAIL_REGEX);
 
-	@Column(name = "email")
-	private String value;
+  @Column(name = "email")
+  private String value;
 
-	public EmailAddress(String emailAddress) {
-		this.value = emailAddress;
-	}
+  public EmailAddress(String emailAddress) {
+    this.value = emailAddress;
+  }
 
-	protected EmailAddress() {
+  protected EmailAddress() {
 
-	}
+  }
 
-	public static boolean isValid(String candidate) {
-		return candidate == null ? false : PATTERN.matcher(candidate).matches();
-	}
+  public static boolean isValid(String candidate) {
+    return candidate == null ? false : PATTERN.matcher(candidate).matches();
+  }
 
 }

@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import com.spike.springdata.jpa.domain.experiment.Department;
 
 public interface DepartmentRepository//
-		extends JpaRepository<Department, Long>, JpaSpecificationExecutor<Department> {
+    extends JpaRepository<Department, Long>, JpaSpecificationExecutor<Department> {
 
 }

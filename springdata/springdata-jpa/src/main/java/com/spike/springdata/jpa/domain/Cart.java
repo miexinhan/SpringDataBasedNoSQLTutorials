@@ -12,47 +12,45 @@ import javax.persistence.OneToMany;
 
 /**
  * 购物车
- * 
  * @author zhoujiagen
- *
  */
 @Entity
 @SuppressWarnings("serial")
 public class Cart extends AbstractJpaEntity {
 
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "CUSTOMER_ID", insertable = false, updatable = false)
-	private Customer customer;
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "CUSTOMER_ID", insertable = false, updatable = false)
+  private Customer customer;
 
-	@Column(name = "CUSTOMER_ID")
-	private Long customerId;
+  @Column(name = "CUSTOMER_ID")
+  private Long customerId;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "CART_ID")
-	private List<LineItem> lineItems = new ArrayList<LineItem>();
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+  @JoinColumn(name = "CART_ID")
+  private List<LineItem> lineItems = new ArrayList<LineItem>();
 
-	public Customer getCustomer() {
-		return customer;
-	}
+  public Customer getCustomer() {
+    return customer;
+  }
 
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
-	}
+  public void setCustomer(Customer customer) {
+    this.customer = customer;
+  }
 
-	public Long getCustomerId() {
-		return customerId;
-	}
+  public Long getCustomerId() {
+    return customerId;
+  }
 
-	public void setCustomerId(Long customerId) {
-		this.customerId = customerId;
-	}
+  public void setCustomerId(Long customerId) {
+    this.customerId = customerId;
+  }
 
-	public List<LineItem> getLineItems() {
-		return lineItems;
-	}
+  public List<LineItem> getLineItems() {
+    return lineItems;
+  }
 
-	public void setLineItems(List<LineItem> lineItems) {
-		this.lineItems = lineItems;
-	}
+  public void setLineItems(List<LineItem> lineItems) {
+    this.lineItems = lineItems;
+  }
 
 }

@@ -16,59 +16,59 @@ import com.spike.springdata.redis.serializer.LongSerializer;
 @Configuration
 public class ApplicationConfig {
 
-	@Bean(name = "redisConnectionFactory")
-	public RedisConnectionFactory redisConnectionFactory() {
-		// JedisConnectionFactory factory = new JedisConnectionFactory();
+  @Bean(name = "redisConnectionFactory")
+  public RedisConnectionFactory redisConnectionFactory() {
+    // JedisConnectionFactory factory = new JedisConnectionFactory();
 
-		// with sentinel configuration
-		JedisConnectionFactory factory = new JedisConnectionFactory(this.sentinelConfig());
+    // with sentinel configuration
+    JedisConnectionFactory factory = new JedisConnectionFactory(this.sentinelConfig());
 
-		factory.setHostName("localhost");
-		factory.setPort(6379);
-		factory.setUsePool(true);
-		factory.setPassword("");
+    factory.setHostName("localhost");
+    factory.setPort(6379);
+    factory.setUsePool(true);
+    factory.setPassword("");
 
-		JedisPoolConfig poolConfig = new JedisPoolConfig();
-		poolConfig.setMaxTotal(10);
-		factory.setPoolConfig(poolConfig);
+    JedisPoolConfig poolConfig = new JedisPoolConfig();
+    poolConfig.setMaxTotal(10);
+    factory.setPoolConfig(poolConfig);
 
-		factory.setTimeout(1000);
+    factory.setTimeout(1000);
 
-		factory.afterPropertiesSet();// !!!
+    factory.afterPropertiesSet();// !!!
 
-		return factory;
-	}
+    return factory;
+  }
 
-	/**
-	 * sentinel mode: $ redis-server etc/redis/sentinel.conf --sentinel
-	 * @return
-	 */
-	@Bean
-	public RedisSentinelConfiguration sentinelConfig() {
-		RedisSentinelConfiguration result = //
-		new RedisSentinelConfiguration().master("mymaster")//
-				.sentinel("127.0.0.1", 5000)//
-				/*.sentinel("127.0.0.1", 180000)*/;
+  /**
+   * sentinel mode: $ redis-server etc/redis/sentinel.conf --sentinel
+   * @return
+   */
+  @Bean
+  public RedisSentinelConfiguration sentinelConfig() {
+    RedisSentinelConfiguration result = //
+        new RedisSentinelConfiguration().master("mymaster")//
+            .sentinel("127.0.0.1", 5000)//
+    /* .sentinel("127.0.0.1", 180000) */;
 
-		return result;
-	}
+    return result;
+  }
 
-	// string-string
-	@Bean(name = "stringRedisTemplate")
-	public StringRedisTemplate stringRedisTemplate() {
-		return new StringRedisTemplate(this.redisConnectionFactory());
-	}
+  // string-string
+  @Bean(name = "stringRedisTemplate")
+  public StringRedisTemplate stringRedisTemplate() {
+    return new StringRedisTemplate(this.redisConnectionFactory());
+  }
 
-	// string-long
-	@Bean(name = "longRedisTemplate")
-	public RedisTemplate<String, Long> longRedisTemplate() {
-		RedisTemplate<String, Long> result = new RedisTemplate<String, Long>();
+  // string-long
+  @Bean(name = "longRedisTemplate")
+  public RedisTemplate<String, Long> longRedisTemplate() {
+    RedisTemplate<String, Long> result = new RedisTemplate<String, Long>();
 
-		result.setConnectionFactory(this.redisConnectionFactory());
-		result.setKeySerializer(new StringRedisSerializer());
-		result.setValueSerializer(LongSerializer.INSTANCE);
+    result.setConnectionFactory(this.redisConnectionFactory());
+    result.setKeySerializer(new StringRedisSerializer());
+    result.setValueSerializer(LongSerializer.INSTANCE);
 
-		return result;
-	}
+    return result;
+  }
 
 }

@@ -8,6 +8,6 @@ import com.spike.springdata.jpa.domain.Customer;
 
 @Repository
 public interface CustomerRepository //
-		extends JpaRepository<Customer, Long>, JpaSpecificationExecutor<Customer> {
+    extends JpaRepository<Customer, Long>, JpaSpecificationExecutor<Customer> {
 
 }

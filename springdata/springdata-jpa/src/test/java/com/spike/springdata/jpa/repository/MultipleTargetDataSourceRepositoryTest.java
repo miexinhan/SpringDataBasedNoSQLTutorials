@@ -15,51 +15,46 @@ import com.spike.springdata.jpa.support.MultipleTargetRoutingDataSource;
 
 /**
  * multiple data source JPA supported repository test<br>
- * 
  * restriction: <br>
- * 
- * SHOULD NOT use transaction cross data source
- * 
- * TODO add JTA to support cross data source transactions
- * 
+ * SHOULD NOT use transaction cross data source TODO add JTA to support cross data source
+ * transactions
  * @author zhoujiagen
- *
  */
 public class MultipleTargetDataSourceRepositoryTest extends JpaTestBase {
-	private static final Logger LOG = Logger.getLogger(MultipleTargetDataSourceRepositoryTest.class);
+  private static final Logger LOG = Logger.getLogger(MultipleTargetDataSourceRepositoryTest.class);
 
-	@Autowired
-	private AddressRespository addressRespository;
+  @Autowired
+  private AddressRespository addressRespository;
 
-	@Test
-	public void resource() {
-		Assert.assertNotNull(addressRespository);
-	}
+  @Test
+  public void resource() {
+    Assert.assertNotNull(addressRespository);
+  }
 
-	@Test
-	public void testMethodInCustomedRepository() {
-		addressRespository.showRepositoryInfo();
-	}
+  @Test
+  public void testMethodInCustomedRepository() {
+    addressRespository.showRepositoryInfo();
+  }
 
-	@Test
-	public void testChangeDataSource() {
+  @Test
+  public void testChangeDataSource() {
 
-		List<String> avaiableDataSourceTargets = MultipleTargetRoutingDataSource.availableTargets();
+    List<String> avaiableDataSourceTargets = MultipleTargetRoutingDataSource.availableTargets();
 
-		Address address1 = new Address("新海村1", "南通", "中国");
-		this.saveOne(avaiableDataSourceTargets.get(0), address1);
+    Address address1 = new Address("新海村1", "南通", "中国");
+    this.saveOne(avaiableDataSourceTargets.get(0), address1);
 
-		Address address2 = new Address("新海村2", "南通", "中国");
-		this.saveOne(avaiableDataSourceTargets.get(1), address2);
-	}
+    Address address2 = new Address("新海村2", "南通", "中国");
+    this.saveOne(avaiableDataSourceTargets.get(1), address2);
+  }
 
-	@Transactional
-	private void saveOne(String target, Address address) {
-		MultipleTargetRoutingDataSource.setTarget(target);
-		LOG.info("CURRENT DATASOURCE TARGE IS: " + target);
+  @Transactional
+  private void saveOne(String target, Address address) {
+    MultipleTargetRoutingDataSource.setTarget(target);
+    LOG.info("CURRENT DATASOURCE TARGE IS: " + target);
 
-		address = addressRespository.save(address);
-		Assert.assertNotNull(address.getId());
-	}
+    address = addressRespository.save(address);
+    Assert.assertNotNull(address.getId());
+  }
 
 }

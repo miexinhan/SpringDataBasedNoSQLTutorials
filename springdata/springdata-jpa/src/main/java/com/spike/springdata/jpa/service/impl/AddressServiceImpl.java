@@ -16,62 +16,62 @@ import com.spike.springdata.jpa.service.AddressService;
 @Service
 public class AddressServiceImpl implements AddressService {
 
-	@Autowired
-	private AddressRespository addressRespository;
+  @Autowired
+  private AddressRespository addressRespository;
 
-	@Override
-	public List<Address> getByStreet(String street) {
-		return addressRespository.findByStreetLike(street);
-	}
+  @Override
+  public List<Address> getByStreet(String street) {
+    return addressRespository.findByStreetLike(street);
+  }
 
-	/**
-	 * roll back when throw runtime exceptions
-	 */
-	@Override
-	@Transactional
-	public Long methodShouldTxRollback0() throws RuntimeBussinessException {
+  /**
+   * roll back when throw runtime exceptions
+   */
+  @Override
+  @Transactional
+  public Long methodShouldTxRollback0() throws RuntimeBussinessException {
 
-		Address bean = new Address("1", "1", "1");
-		bean = addressRespository.save(bean);
+    Address bean = new Address("1", "1", "1");
+    bean = addressRespository.save(bean);
 
-		if ("1".equals(bean.getStreet())) {
-			throw new RuntimeBussinessException("should rollback");
-		}
+    if ("1".equals(bean.getStreet())) {
+      throw new RuntimeBussinessException("should rollback");
+    }
 
-		return bean.getId();
-	}
+    return bean.getId();
+  }
 
-	/**
-	 * roll back when throw non-runtime exceptions
-	 */
-	@Override
-	@Transactional(rollbackOn = { Exception.class })
-	public Long methodShouldTxRollback1() throws Exception {
+  /**
+   * roll back when throw non-runtime exceptions
+   */
+  @Override
+  @Transactional(rollbackOn = { Exception.class })
+  public Long methodShouldTxRollback1() throws Exception {
 
-		Address bean = new Address("1", "1", "1");
-		bean = addressRespository.save(bean);
+    Address bean = new Address("1", "1", "1");
+    bean = addressRespository.save(bean);
 
-		if ("1".equals(bean.getStreet())) {
-			throw new Exception("should rollback");
-		}
+    if ("1".equals(bean.getStreet())) {
+      throw new Exception("should rollback");
+    }
 
-		return bean.getId();
-	}
+    return bean.getId();
+  }
 
-	/**
-	 * roll back when throw non-runtime exceptions, the subclass??? YES
-	 */
-	@Override
-	@Transactional(rollbackOn = { Exception.class })
-	public Long methodShouldTxRollback2() throws BussinessException {
+  /**
+   * roll back when throw non-runtime exceptions, the subclass??? YES
+   */
+  @Override
+  @Transactional(rollbackOn = { Exception.class })
+  public Long methodShouldTxRollback2() throws BussinessException {
 
-		Address bean = new Address("1", "1", "1");
-		bean = addressRespository.save(bean);
+    Address bean = new Address("1", "1", "1");
+    bean = addressRespository.save(bean);
 
-		if ("1".equals(bean.getStreet())) {
-			throw new BussinessException("should rollback");
-		}
+    if ("1".equals(bean.getStreet())) {
+      throw new BussinessException("should rollback");
+    }
 
-		return bean.getId();
-	}
+    return bean.getId();
+  }
 }

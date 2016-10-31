@@ -7,7 +7,6 @@ import com.spike.springdata.neo4j.anno.SpringDataBook;
 
 /**
  * 实体：标签
- * 
  * @author zhoujiagen<br/>
  *         Aug 12, 2015 9:13:42 PM
  */
@@ -15,35 +14,35 @@ import com.spike.springdata.neo4j.anno.SpringDataBook;
 @NodeEntity
 public class Tag extends AbstractEntity {
 
-	private String name;
+  private String name;
 
-	/**
-	 * 运行时判断属性
-	 */
-	@GraphProperty
-	Object value;
+  /**
+   * 运行时判断属性
+   */
+  @GraphProperty
+  Object value;
 
-	public Tag() {
-	}
+  public Tag() {
+  }
 
-	public Tag(String name, Object value) {
-		this.name = name;
-		this.value = value;
-	}
+  public Tag(String name, Object value) {
+    this.name = name;
+    this.value = value;
+  }
 
-	public String getName() {
-		return name;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	public Object getValue() {
-		return value;
-	}
+  public Object getValue() {
+    return value;
+  }
 
-	public void setValue(Object value) {
-		this.value = value;
-	}
+  public void setValue(Object value) {
+    this.value = value;
+  }
 }

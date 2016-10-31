@@ -2,125 +2,124 @@ package com.spike.springdata.hbase.domain;
 
 /**
  * HBase领域基类
- * 
  * @author zhoujiagen
  */
 public class HBaseDomain {
-	protected String namespace = "default"; // 命名空间
-	protected String tableName;// 表名称
-	protected String columnFamilyName;// 列族名称
-	protected String qualifierName; // 列限定符名称
-	protected byte[] value; // 值
-	protected int timestamp; // version
+  protected String namespace = "default"; // 命名空间
+  protected String tableName;// 表名称
+  protected String columnFamilyName;// 列族名称
+  protected String qualifierName; // 列限定符名称
+  protected byte[] value; // 值
+  protected int timestamp; // version
 
-	public static HBaseDomainBuilder BUILDER = new HBaseDomainBuilder();
-	
-	// constructor
-	private HBaseDomain() {
-	}
+  public static HBaseDomainBuilder BUILDER = new HBaseDomainBuilder();
 
-	// getter/setter
-	public String getNamespace() {
-		return namespace;
-	}
+  // constructor
+  private HBaseDomain() {
+  }
 
-	public void setNamespace(String namespace) {
-		this.namespace = namespace;
-	}
+  // getter/setter
+  public String getNamespace() {
+    return namespace;
+  }
 
-	public String getTableName() {
-		return tableName;
-	}
+  public void setNamespace(String namespace) {
+    this.namespace = namespace;
+  }
 
-	public void setTableName(String tableName) {
-		this.tableName = tableName;
-	}
+  public String getTableName() {
+    return tableName;
+  }
 
-	public String getColumnFamilyName() {
-		return columnFamilyName;
-	}
+  public void setTableName(String tableName) {
+    this.tableName = tableName;
+  }
 
-	public void setColumnFamilyName(String columnFamilyName) {
-		this.columnFamilyName = columnFamilyName;
-	}
+  public String getColumnFamilyName() {
+    return columnFamilyName;
+  }
 
-	public String getQualifierName() {
-		return qualifierName;
-	}
+  public void setColumnFamilyName(String columnFamilyName) {
+    this.columnFamilyName = columnFamilyName;
+  }
 
-	public void setQualifierName(String qualifierName) {
-		this.qualifierName = qualifierName;
-	}
+  public String getQualifierName() {
+    return qualifierName;
+  }
 
-	public byte[] getValue() {
-		return value;
-	}
+  public void setQualifierName(String qualifierName) {
+    this.qualifierName = qualifierName;
+  }
 
-	public void setValue(byte[] value) {
-		this.value = value;
-	}
+  public byte[] getValue() {
+    return value;
+  }
 
-	public int getTimestamp() {
-		return timestamp;
-	}
+  public void setValue(byte[] value) {
+    this.value = value;
+  }
 
-	public void setTimestamp(int timestamp) {
-		this.timestamp = timestamp;
-	}
+  public int getTimestamp() {
+    return timestamp;
+  }
 
-	// helper
-	public static class HBaseDomainBuilder {
+  public void setTimestamp(int timestamp) {
+    this.timestamp = timestamp;
+  }
 
-		private String namespace = "default"; // 命名空间
-		private String tableName;// 表名称
-		private String columnFamilyName;// 列族名称
-		private String qualifierName; // 列限定符名称
-		private byte[] value; // 值
-		private int timestamp; // version
+  // helper
+  public static class HBaseDomainBuilder {
 
-		private HBaseDomainBuilder() {
-		}
+    private String namespace = "default"; // 命名空间
+    private String tableName;// 表名称
+    private String columnFamilyName;// 列族名称
+    private String qualifierName; // 列限定符名称
+    private byte[] value; // 值
+    private int timestamp; // version
 
-		public HBaseDomainBuilder namespace(String value) {
-			this.namespace = value;
-			return this;
-		}
+    private HBaseDomainBuilder() {
+    }
 
-		public HBaseDomainBuilder table(String value) {
-			this.tableName = value;
-			return this;
-		}
+    public HBaseDomainBuilder namespace(String value) {
+      this.namespace = value;
+      return this;
+    }
 
-		public HBaseDomainBuilder columnFamily(String value) {
-			this.columnFamilyName = value;
-			return this;
-		}
+    public HBaseDomainBuilder table(String value) {
+      this.tableName = value;
+      return this;
+    }
 
-		public HBaseDomainBuilder qualifier(String value) {
-			this.qualifierName = value;
-			return this;
-		}
+    public HBaseDomainBuilder columnFamily(String value) {
+      this.columnFamilyName = value;
+      return this;
+    }
 
-		public HBaseDomainBuilder value(byte[] value) {
-			this.value = value;
-			return this;
-		}
+    public HBaseDomainBuilder qualifier(String value) {
+      this.qualifierName = value;
+      return this;
+    }
 
-		public HBaseDomainBuilder timestamp(int value) {
-			this.timestamp = value;
-			return this;
-		}
+    public HBaseDomainBuilder value(byte[] value) {
+      this.value = value;
+      return this;
+    }
 
-		public HBaseDomain build() {
-			HBaseDomain result = new HBaseDomain();
-			result.setNamespace(namespace);
-			result.setTableName(tableName);
-			result.setColumnFamilyName(columnFamilyName);
-			result.setQualifierName(qualifierName);
-			result.setValue(value);
-			result.setTimestamp(timestamp);
-			return result;
-		}
-	}
+    public HBaseDomainBuilder timestamp(int value) {
+      this.timestamp = value;
+      return this;
+    }
+
+    public HBaseDomain build() {
+      HBaseDomain result = new HBaseDomain();
+      result.setNamespace(namespace);
+      result.setTableName(tableName);
+      result.setColumnFamilyName(columnFamilyName);
+      result.setQualifierName(qualifierName);
+      result.setValue(value);
+      result.setTimestamp(timestamp);
+      return result;
+    }
+  }
 
 }

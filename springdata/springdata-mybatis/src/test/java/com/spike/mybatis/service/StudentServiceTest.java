@@ -12,45 +12,45 @@ import com.spike.mybatis.domain.PhoneNumber;
 import com.spike.mybatis.domain.Student;
 
 public class StudentServiceTest {
-	private static StudentService studentService;
+  private static StudentService studentService;
 
-	@BeforeClass
-	public static void setup() {
-		studentService = new StudentService();
-	}
+  @BeforeClass
+  public static void setup() {
+    studentService = new StudentService();
+  }
 
-	@AfterClass
-	public static void teardown() {
-		studentService = null;
-	}
+  @AfterClass
+  public static void teardown() {
+    studentService = null;
+  }
 
-	@Test
-	public void testFindAllStudents() {
-		List<Student> students = studentService.findAllStudents();
-		Assert.assertNotNull(students);
-		for (Student student : students) {
-			System.out.println(student);
-		}
-	}
+  @Test
+  public void testFindAllStudents() {
+    List<Student> students = studentService.findAllStudents();
+    Assert.assertNotNull(students);
+    for (Student student : students) {
+      System.out.println(student);
+    }
+  }
 
-	@Test
-	public void testFindStudentById() {
-		Student student = studentService.findStudentById(3);
-		Assert.assertNotNull(student);
-		System.out.println(student);
-	}
+  @Test
+  public void testFindStudentById() {
+    Student student = studentService.findStudentById(3);
+    Assert.assertNotNull(student);
+    System.out.println(student);
+  }
 
-	@Test
-	public void testCreateStudent() {
-		Student student = new Student();
-		int id = 3;
-		student.setStudId(id);
-		student.setName("student_" + id);
-		student.setEmail("student_" + id + "gmail.com");
-		student.setDob(new Date());
-		student.setPhone(new PhoneNumber("135-3333-4444"));
-		studentService.createStudent(student);
-		Student newStudent = studentService.findStudentById(id);
-		Assert.assertNotNull(newStudent);
-	}
+  @Test
+  public void testCreateStudent() {
+    Student student = new Student();
+    int id = 3;
+    student.setStudId(id);
+    student.setName("student_" + id);
+    student.setEmail("student_" + id + "gmail.com");
+    student.setDob(new Date());
+    student.setPhone(new PhoneNumber("135-3333-4444"));
+    studentService.createStudent(student);
+    Student newStudent = studentService.findStudentById(id);
+    Assert.assertNotNull(newStudent);
+  }
 }

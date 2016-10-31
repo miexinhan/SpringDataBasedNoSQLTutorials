@@ -28,27 +28,28 @@ import com.spike.springdata.hbase.domain.WebTable;
  * 1 row(s) in 0.0190 seconds
  * 
  * </pre>
- * 
  * @author zhoujiagen
  */
 public class DeleteExample extends BaseExample {
 
-	public DeleteExample(String tableName, String... columnFamilyNames) {
-		super(tableName, columnFamilyNames);
-	}
+  public DeleteExample(String tableName, String... columnFamilyNames) {
+    super(tableName, columnFamilyNames);
+  }
 
-	public static void main(String[] args) throws IOException {
-		new DeleteExample(WebTable.TABLE_NAME, WebTable.CF_ANCHOR, WebTable.CF_CONTENTS, WebTable.CF_PEOPLE)//
-				.doWork();
-	}
+  public static void main(String[] args) throws IOException {
+    new DeleteExample(WebTable.TABLE_NAME, WebTable.CF_ANCHOR, WebTable.CF_CONTENTS,
+        WebTable.CF_PEOPLE)//
+        .doWork();
+  }
 
-	@Override
-	protected void doSomething() throws IOException {
-		Delete delete = new Delete(Bytes.toBytes(AppConstants.ROWKEY_1));
-		delete.addColumn(Bytes.toBytes(WebTable.CF_ANCHOR), Bytes.toBytes(WebTable.C_ANCHOR_CSSNSI_COM), 1476756670762L);
+  @Override
+  protected void doSomething() throws IOException {
+    Delete delete = new Delete(Bytes.toBytes(AppConstants.ROWKEY_1));
+    delete.addColumn(Bytes.toBytes(WebTable.CF_ANCHOR),
+      Bytes.toBytes(WebTable.C_ANCHOR_CSSNSI_COM), 1476756670762L);
 
-		// 删除指定的row和cell
-		table.delete(delete);
-	}
+    // 删除指定的row和cell
+    table.delete(delete);
+  }
 
 }

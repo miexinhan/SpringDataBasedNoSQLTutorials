@@ -8,12 +8,12 @@ import com.spike.springdata.jpa.exception.RuntimeBussinessException;
 
 public interface AddressService {
 
-	List<Address> getByStreet(String street);
+  List<Address> getByStreet(String street);
 
-	Long methodShouldTxRollback0() throws RuntimeBussinessException;
+  Long methodShouldTxRollback0() throws RuntimeBussinessException;
 
-	Long methodShouldTxRollback1() throws Exception;
+  Long methodShouldTxRollback1() throws Exception;
 
-	Long methodShouldTxRollback2() throws BussinessException;
+  Long methodShouldTxRollback2() throws BussinessException;
 
 }

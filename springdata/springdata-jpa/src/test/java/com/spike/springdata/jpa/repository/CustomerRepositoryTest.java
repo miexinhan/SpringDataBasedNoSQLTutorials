@@ -8,16 +8,16 @@ import com.spike.springdata.jpa.JpaTestBase;
 
 public class CustomerRepositoryTest extends JpaTestBase {
 
-	@Autowired
-	private CustomerRepository customerRepository;
+  @Autowired
+  private CustomerRepository customerRepository;
 
-	@Test
-	public void resource() {
-		Assert.assertNotNull(customerRepository);
-	}
+  @Test
+  public void resource() {
+    Assert.assertNotNull(customerRepository);
+  }
 
-	@Test
-	public void saveAndfind() {
+  @Test
+  public void saveAndfind() {
 
-	}
+  }
 }

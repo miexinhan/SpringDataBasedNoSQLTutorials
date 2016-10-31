@@ -7,7 +7,6 @@ import com.spike.springdata.neo4j.anno.SpringDataBook;
 
 /**
  * 实体：国家
- * 
  * @author zhoujiagen<br/>
  *         Aug 12, 2015 8:54:18 PM
  */
@@ -15,41 +14,38 @@ import com.spike.springdata.neo4j.anno.SpringDataBook;
 @NodeEntity
 public class Country extends AbstractEntity {
 
-	@Indexed(unique = true)
-	private String code;
+  @Indexed(unique = true)
+  private String code;
 
-	private String name;
+  private String name;
 
-	public Country() {
-	}
+  public Country() {
+  }
 
-	/**
-	 * 国家
-	 * 
-	 * @param code
-	 *            代码
-	 * @param name
-	 *            名称
-	 */
-	public Country(String code, String name) {
-		this.code = code;
-		this.name = name;
-	}
+  /**
+   * 国家
+   * @param code 代码
+   * @param name 名称
+   */
+  public Country(String code, String name) {
+    this.code = code;
+    this.name = name;
+  }
 
-	public String getCode() {
-		return code;
-	}
+  public String getCode() {
+    return code;
+  }
 
-	public String getName() {
-		return name;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+  public void setCode(String code) {
+    this.code = code;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
 
 }

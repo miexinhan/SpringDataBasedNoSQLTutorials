@@ -11,76 +11,70 @@ import com.spike.springdata.neo4j.anno.SpringDataBook;
 
 /**
  * 实体：顾客
- * 
  * @author zhoujiagen<br/>
  *         Aug 12, 2015 8:56:05 PM
  */
 @SpringDataBook(chapter = { "7" })
 @NodeEntity
 public class Customer extends AbstractEntity {
-	private String firstName;
-	private String lastName;
+  private String firstName;
+  private String lastName;
 
-	@Indexed(unique = true)
-	private String emailAddress;
+  @Indexed(unique = true)
+  private String emailAddress;
 
-	/**
-	 * 定义关系: ADDRESS
-	 */
-	@RelatedTo(type = "ADDRESS")
-	private Set<Address> addresses = new HashSet<Address>();
+  /**
+   * 定义关系: ADDRESS
+   */
+  @RelatedTo(type = "ADDRESS")
+  private Set<Address> addresses = new HashSet<Address>();
 
-	public Customer() {
-	}
+  public Customer() {
+  }
 
-	/**
-	 * 顾客
-	 * 
-	 * @param firstName
-	 *            名
-	 * @param lastName
-	 *            姓
-	 * @param emailAddress
-	 *            邮箱(唯一)
-	 * @param addresses
-	 *            地址集合
-	 */
-	public Customer(String firstName, String lastName, String emailAddress) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.emailAddress = emailAddress;
-	}
+  /**
+   * 顾客
+   * @param firstName 名
+   * @param lastName 姓
+   * @param emailAddress 邮箱(唯一)
+   * @param addresses 地址集合
+   */
+  public Customer(String firstName, String lastName, String emailAddress) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.emailAddress = emailAddress;
+  }
 
-	public String getFirstName() {
-		return firstName;
-	}
+  public String getFirstName() {
+    return firstName;
+  }
 
-	public String getLastName() {
-		return lastName;
-	}
+  public String getLastName() {
+    return lastName;
+  }
 
-	public String getEmailAddress() {
-		return emailAddress;
-	}
+  public String getEmailAddress() {
+    return emailAddress;
+  }
 
-	public Set<Address> getAddresses() {
-		return addresses;
-	}
+  public Set<Address> getAddresses() {
+    return addresses;
+  }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
 
-	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
-	}
+  public void setEmailAddress(String emailAddress) {
+    this.emailAddress = emailAddress;
+  }
 
-	public void setAddresses(Set<Address> addresses) {
-		this.addresses = addresses;
-	}
+  public void setAddresses(Set<Address> addresses) {
+    this.addresses = addresses;
+  }
 
 }

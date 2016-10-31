@@ -7,12 +7,11 @@ import java.lang.annotation.Target;
 
 /**
  * 用于在源码中标注来源于Graph Databaes Book
- * 
  * @author zhoujiagen<br/>
  *         Aug 12, 2015 9:32:57 PM
  */
 @Retention(RetentionPolicy.SOURCE)
 @Target(value = { ElementType.TYPE })
 public @interface GraphDatabasesBook {
-	String[] chapter() default { "" };
+  String[] chapter() default { "" };
 }
